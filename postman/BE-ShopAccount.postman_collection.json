@@ -6,6 +6,7 @@
   },
   "variable": [
     { "key": "baseUrl", "value": "http://localhost:3000" },
+    { "key": "authToken", "value": "" },
     { "key": "userId", "value": "" },
     { "key": "gameCategoryId", "value": "" },
     { "key": "gameAccountId", "value": "" },
@@ -15,6 +16,35 @@
     { "key": "supportTicketId", "value": "" }
   ],
   "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"auth_postman\",\n  \"email\": \"auth_postman@example.com\",\n  \"password\": \"Auth@123\",\n  \"phone\": \"0901234567\"\n}"
+            },
+            "url": "{{baseUrl}}/auth/register"
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"auth_postman@example.com\",\n  \"password\": \"Auth@123\"\n}"
+            },
+            "url": "{{baseUrl}}/auth/login"
+          }
+        }
+      ]
+    },
     {
       "name": "Users",
       "item": [

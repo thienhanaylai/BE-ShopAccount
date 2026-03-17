@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AuthModule } from './modules/auth/auth.module';
 import { GameAccountsModule } from './modules/game_accounts/game_accounts.module';
 import { GameCategoriesModule } from './modules/game_categories/game_categories.module';
 import { OrdersModule } from './modules/orders/orders.module';
@@ -15,6 +16,7 @@ import { PrismaModule } from './prisma/prisma.module';
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     PrismaModule,
+    AuthModule,
     UsersModule,
     GameAccountsModule,
     GameCategoriesModule,
