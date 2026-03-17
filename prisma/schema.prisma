@@ -1,14 +1,171 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
-  provider = "prisma-client"
-  output   = "../generated/prisma"
+  provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  CUSTOMER
+  ADMIN
+}
+
+enum UserStatus {
+  ACTIVE
+  BLOCKED
+}
+
+enum GameAccountStatus {
+  AVAILABLE
+  RESERVED
+  SOLD
+  HIDDEN
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  CANCELLED
+  COMPLETED
+}
+
+enum TransactionStatus {
+  PENDING
+  SUCCESS
+  FAILED
+  REFUNDED
+}
+
+enum SellRequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum SupportTicketStatus {
+  PENDING
+  IN_PROGRESS
+  RESOLVED
+  REJECTED
+}
+
+model User {
+  id               String          @id @default(cuid())
+  username         String          @unique
+  email            String          @unique
+  passwordHash     String          @map("password_hash")
+  role             UserRole        @default(CUSTOMER)
+  status           UserStatus      @default(ACTIVE)
+  phone            String?
+  balance          Int             @default(0)
+  balanceUpdatedAt DateTime?       @map("balance_updated_at")
+  createdAt        DateTime        @default(now()) @map("created_at")
+  updatedAt        DateTime        @updatedAt @map("updated_at")
+  orders           Order[]
+  transactions     Transaction[]
+  sellRequests     SellRequest[]
+  supportTickets   SupportTicket[]
+
+  @@map("users")
+}
+
+model GameCategory {
+  id          String        @id @default(cuid())
+  name        String        @unique
+  slug        String        @unique
+  icon        String
+  description String?
+  isActive    Boolean       @default(true) @map("is_active")
+  createdAt   DateTime      @default(now()) @map("created_at")
+  updatedAt   DateTime      @updatedAt @map("updated_at")
+  accounts    GameAccount[]
+
+  @@map("game_categories")
+}
+
+model GameAccount {
+  id          String            @id @default(cuid())
+  categoryId  String            @map("category_id")
+  username    String
+  email       String
+  password    String
+  price       Int
+  status      GameAccountStatus @default(AVAILABLE)
+  level       Int               @default(0)
+  rank        String?
+  images      String[]
+  description String?
+  createdAt   DateTime          @default(now()) @map("created_at")
+  updatedAt   DateTime          @updatedAt @map("updated_at")
+  category    GameCategory      @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  order       Order?
+
+  @@index([categoryId])
+  @@map("game_accounts")
+}
+
+model Order {
+  id            String          @id @default(cuid())
+  userId        String          @map("user_id")
+  gameAccountId String          @unique @map("game_account_id")
+  price         Int
+  status        OrderStatus     @default(PENDING)
+  createdAt     DateTime        @default(now()) @map("created_at")
+  updatedAt     DateTime        @updatedAt @map("updated_at")
+  user          User            @relation(fields: [userId], references: [id], onDelete: Restrict)
+  gameAccount   GameAccount     @relation(fields: [gameAccountId], references: [id], onDelete: Restrict)
+  transactions  Transaction[]
+
+  @@index([userId])
+  @@map("orders")
+}
+
+model Transaction {
+  id        String            @id @default(cuid())
+  userId    String            @map("user_id")
+  orderId   String?           @map("order_id")
+  price     Int
+  status    TransactionStatus @default(PENDING)
+  createdAt DateTime          @default(now()) @map("created_at")
+  updatedAt DateTime          @updatedAt @map("updated_at")
+  user      User              @relation(fields: [userId], references: [id], onDelete: Restrict)
+  order     Order?            @relation(fields: [orderId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([orderId])
+  @@map("transactions")
+}
+
+model SellRequest {
+  id              String            @id @default(cuid())
+  userId          String            @map("user_id")
+  price           Int
+  status          SellRequestStatus @default(PENDING)
+  description     String?
+  rejectReason    String?           @map("reject_reason")
+  accountUsername String            @map("account_username")
+  accountPassword String            @map("account_password")
+  createdAt       DateTime          @default(now()) @map("created_at")
+  updatedAt       DateTime          @updatedAt @map("updated_at")
+  user            User              @relation(fields: [userId], references: [id], onDelete: Restrict)
+
+  @@index([userId])
+  @@map("sell_requests")
+}
+
+model SupportTicket {
+  id          String              @id @default(cuid())
+  userId      String              @map("user_id")
+  title       String
+  description String
+  category    String
+  status      SupportTicketStatus @default(PENDING)
+  createdAt   DateTime            @default(now()) @map("created_at")
+  updatedAt   DateTime            @updatedAt @map("updated_at")
+  user        User                @relation(fields: [userId], references: [id], onDelete: Restrict)
+
+  @@index([userId])
+  @@map("support_tickets")
 }

@@ -1,6 +1,6 @@
 # BE-ShopAccount
 
-Backend API cho hệ thống **ShopAccount** — xây dựng trên [NestJS](https://nestjs.com/), TypeScript, MongoDB (Mongoose) và Prisma (PostgreSQL).
+Backend API cho hệ thống **ShopAccount** — xây dựng trên [NestJS](https://nestjs.com/), TypeScript và Prisma (PostgreSQL).
 
 ---
 
@@ -24,18 +24,17 @@ Backend API cho hệ thống **ShopAccount** — xây dựng trên [NestJS](http
 
 ## 1. Tech Stack
 
-| Thành phần     | Công nghệ                           |
-| -------------- | ----------------------------------- |
-| Runtime        | Node.js 22.x                        |
-| Framework      | NestJS 11                           |
-| Ngôn ngữ       | TypeScript 5                        |
-| Database chính | MongoDB (Mongoose)                  |
-| Database phụ   | PostgreSQL (Prisma)                 |
-| Validation     | class-validator + class-transformer |
-| Linting        | ESLint + typescript-eslint          |
-| Formatting     | Prettier                            |
-| Testing        | Jest + Supertest                    |
-| Deploy         | Heroku (Procfile)                   |
+| Thành phần | Công nghệ                           |
+| ---------- | ----------------------------------- |
+| Runtime    | Node.js 22.x                        |
+| Framework  | NestJS 11                           |
+| Ngôn ngữ   | TypeScript 5                        |
+| Database   | PostgreSQL (Prisma)                 |
+| Validation | class-validator + class-transformer |
+| Linting    | ESLint + typescript-eslint          |
+| Formatting | Prettier                            |
+| Testing    | Jest + Supertest                    |
+| Deploy     | Heroku (Procfile)                   |
 
 ---
 
@@ -90,15 +89,15 @@ src/
         ├── dto/
         │   ├── create-<feature>.dto.ts
         │   └── update-<feature>.dto.ts
-        └── schemas/           # Mongoose schema
-            └── <feature>.schema.ts
+        └── entities/          # Prisma model mapping (optional layer)
+          └── <feature>.entity.ts
 prisma/
 └── schema.prisma          # Prisma schema (PostgreSQL)
 test/
 └── app.e2e-spec.ts        # E2E tests
 ```
 
-> **Quy tắc:** Mỗi tính năng mới (`products`, `orders`, `auth`, ...) phải tạo một thư mục riêng trong `src/modules/` với đầy đủ module, controller, service, dto, schema.
+> **Quy tắc:** Mỗi tính năng mới (`products`, `orders`, `auth`, ...) phải tạo một thư mục riêng trong `src/modules/` với đầy đủ module, controller, service, dto.
 
 ---
 
@@ -111,7 +110,7 @@ test/
 | Thư mục module | `kebab-case`           | `product-categories/`   |
 | File           | `kebab-case` + suffix  | `product.service.ts`    |
 | DTO file       | `create-<name>.dto.ts` | `create-product.dto.ts` |
-| Schema file    | `<name>.schema.ts`     | `product.schema.ts`     |
+| Entity file    | `<name>.entity.ts`     | `product.entity.ts`     |
 | Test file      | `<name>.spec.ts`       | `users.service.spec.ts` |
 
 ### Code
@@ -181,10 +180,9 @@ async findOne(id) { ... }
 ```typescript
 // ✅ Thứ tự import
 import { Injectable } from '@nestjs/common'; // NestJS
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose'; // Thư viện ngoài
+import { PrismaService } from '../../prisma/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto'; // Internal
-import { User, UserDocument } from './schemas/user.schema';
+import { User } from '@prisma/client';
 ```
 
 ### Async / Await
@@ -273,26 +271,6 @@ export class CreateUserDto {
 
 ## 8. Schema / Entity
 
-### Mongoose Schema
-
-- Luôn bật `{ timestamps: true }` để tự động có `createdAt` / `updatedAt`.
-- Các field bắt buộc phải có `required: true`.
-- Export cả `Document type` và `SchemaFactory`:
-
-```typescript
-@Schema({ timestamps: true })
-export class Product {
-  @Prop({ required: true, trim: true })
-  name: string;
-
-  @Prop({ required: true, min: 0 })
-  price: number;
-}
-
-export type ProductDocument = HydratedDocument<Product>;
-export const ProductSchema = SchemaFactory.createForClass(Product);
-```
-
 ### Prisma Schema
 
 - Mỗi model phải có `id`, `createdAt`, `updatedAt`.
@@ -315,7 +293,7 @@ export const ProductSchema = SchemaFactory.createForClass(Product);
 
 ```typescript
 // ✅ Đúng
-const user = await this.userModel.findById(id);
+const user = await this.prisma.user.findUnique({ where: { id } });
 if (!user) throw new NotFoundException(`User #${id} not found`);
 
 // ❌ Sai
@@ -333,7 +311,6 @@ if (!user) throw new Error('not found');
 
 ```env
 PORT=3000
-MONGODB_URI=mongodb+srv://<user>:<password>@cluster/dbname
 DATABASE_URL=postgresql://<user>:<password>@host:5432/dbname
 JWT_SECRET=your_jwt_secret_here
 ```

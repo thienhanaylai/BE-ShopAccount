@@ -1,0 +1,342 @@
+{
+  "info": {
+    "name": "BE-ShopAccount API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Full CRUD collection for all feature modules in BE-ShopAccount"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000" },
+    { "key": "userId", "value": "" },
+    { "key": "gameCategoryId", "value": "" },
+    { "key": "gameAccountId", "value": "" },
+    { "key": "orderId", "value": "" },
+    { "key": "transactionId", "value": "" },
+    { "key": "sellRequestId", "value": "" },
+    { "key": "supportTicketId", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Create User",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"user_postman\",\n  \"email\": \"user_postman@example.com\",\n  \"password\": \"User@123\",\n  \"phone\": \"0900000000\",\n  \"role\": \"CUSTOMER\"\n}"
+            },
+            "url": "{{baseUrl}}/users"
+          }
+        },
+        {
+          "name": "Get Users",
+          "request": { "method": "GET", "url": "{{baseUrl}}/users" }
+        },
+        {
+          "name": "Get User By Id",
+          "request": { "method": "GET", "url": "{{baseUrl}}/users/{{userId}}" }
+        },
+        {
+          "name": "Update User",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone\": \"0911111111\",\n  \"status\": \"ACTIVE\"\n}"
+            },
+            "url": "{{baseUrl}}/users/{{userId}}"
+          }
+        },
+        {
+          "name": "Delete User",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/users/{{userId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Game Categories",
+      "item": [
+        {
+          "name": "Create Game Category",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Valorant\",\n  \"slug\": \"valorant\",\n  \"icon\": \"https://cdn.example.com/valorant.png\",\n  \"description\": \"Valorant accounts\",\n  \"isActive\": true\n}"
+            },
+            "url": "{{baseUrl}}/game-categories"
+          }
+        },
+        {
+          "name": "Get Game Categories",
+          "request": { "method": "GET", "url": "{{baseUrl}}/game-categories" }
+        },
+        {
+          "name": "Get Game Category By Id",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/game-categories/{{gameCategoryId}}"
+          }
+        },
+        {
+          "name": "Update Game Category",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Updated category description\"\n}"
+            },
+            "url": "{{baseUrl}}/game-categories/{{gameCategoryId}}"
+          }
+        },
+        {
+          "name": "Delete Game Category",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/game-categories/{{gameCategoryId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Game Accounts",
+      "item": [
+        {
+          "name": "Create Game Account",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoryId\": \"{{gameCategoryId}}\",\n  \"username\": \"ga_postman_001\",\n  \"email\": \"ga_postman_001@example.com\",\n  \"password\": \"secret001\",\n  \"price\": 120000,\n  \"status\": \"AVAILABLE\",\n  \"level\": 20,\n  \"rank\": \"Gold\",\n  \"images\": [\"https://cdn.example.com/ga1.png\"],\n  \"description\": \"Postman created account\"\n}"
+            },
+            "url": "{{baseUrl}}/game-accounts"
+          }
+        },
+        {
+          "name": "Get Game Accounts",
+          "request": { "method": "GET", "url": "{{baseUrl}}/game-accounts" }
+        },
+        {
+          "name": "Get Game Account By Id",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/game-accounts/{{gameAccountId}}"
+          }
+        },
+        {
+          "name": "Update Game Account",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"price\": 130000,\n  \"status\": \"RESERVED\"\n}"
+            },
+            "url": "{{baseUrl}}/game-accounts/{{gameAccountId}}"
+          }
+        },
+        {
+          "name": "Delete Game Account",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/game-accounts/{{gameAccountId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Orders",
+      "item": [
+        {
+          "name": "Create Order",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"{{userId}}\",\n  \"gameAccountId\": \"{{gameAccountId}}\",\n  \"price\": 130000,\n  \"status\": \"PENDING\"\n}"
+            },
+            "url": "{{baseUrl}}/orders"
+          }
+        },
+        {
+          "name": "Get Orders",
+          "request": { "method": "GET", "url": "{{baseUrl}}/orders" }
+        },
+        {
+          "name": "Get Order By Id",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/orders/{{orderId}}"
+          }
+        },
+        {
+          "name": "Update Order",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"status\": \"PAID\"\n}" },
+            "url": "{{baseUrl}}/orders/{{orderId}}"
+          }
+        },
+        {
+          "name": "Delete Order",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/orders/{{orderId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Transactions",
+      "item": [
+        {
+          "name": "Create Transaction",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"{{userId}}\",\n  \"orderId\": \"{{orderId}}\",\n  \"price\": 130000,\n  \"status\": \"SUCCESS\"\n}"
+            },
+            "url": "{{baseUrl}}/transactions"
+          }
+        },
+        {
+          "name": "Get Transactions",
+          "request": { "method": "GET", "url": "{{baseUrl}}/transactions" }
+        },
+        {
+          "name": "Get Transaction By Id",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/transactions/{{transactionId}}"
+          }
+        },
+        {
+          "name": "Update Transaction",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"REFUNDED\"\n}"
+            },
+            "url": "{{baseUrl}}/transactions/{{transactionId}}"
+          }
+        },
+        {
+          "name": "Delete Transaction",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/transactions/{{transactionId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Sell Requests",
+      "item": [
+        {
+          "name": "Create Sell Request",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"{{userId}}\",\n  \"price\": 250000,\n  \"accountUsername\": \"sell_acc_001\",\n  \"accountPassword\": \"sell_secret_001\",\n  \"status\": \"PENDING\",\n  \"description\": \"Need to sell account quickly\"\n}"
+            },
+            "url": "{{baseUrl}}/sell-requests"
+          }
+        },
+        {
+          "name": "Get Sell Requests",
+          "request": { "method": "GET", "url": "{{baseUrl}}/sell-requests" }
+        },
+        {
+          "name": "Get Sell Request By Id",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/sell-requests/{{sellRequestId}}"
+          }
+        },
+        {
+          "name": "Update Sell Request",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"APPROVED\"\n}"
+            },
+            "url": "{{baseUrl}}/sell-requests/{{sellRequestId}}"
+          }
+        },
+        {
+          "name": "Delete Sell Request",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/sell-requests/{{sellRequestId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Support Tickets",
+      "item": [
+        {
+          "name": "Create Support Ticket",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"{{userId}}\",\n  \"title\": \"Cannot login\",\n  \"description\": \"Login failed after buying account\",\n  \"category\": \"login\",\n  \"status\": \"PENDING\"\n}"
+            },
+            "url": "{{baseUrl}}/support-tickets"
+          }
+        },
+        {
+          "name": "Get Support Tickets",
+          "request": { "method": "GET", "url": "{{baseUrl}}/support-tickets" }
+        },
+        {
+          "name": "Get Support Ticket By Id",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/support-tickets/{{supportTicketId}}"
+          }
+        },
+        {
+          "name": "Update Support Ticket",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"IN_PROGRESS\"\n}"
+            },
+            "url": "{{baseUrl}}/support-tickets/{{supportTicketId}}"
+          }
+        },
+        {
+          "name": "Delete Support Ticket",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/support-tickets/{{supportTicketId}}"
+          }
+        }
+      ]
+    }
+  ]
+}
