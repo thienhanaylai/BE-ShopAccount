@@ -10,6 +10,7 @@ import { SellRequestsModule } from './modules/sell_requests/sell_requests.module
 import { SupportTicketsModule } from './modules/support_tickets/support_tickets.module';
 import { TransactionsModule } from './modules/transactions/transactions.module';
 import { UsersModule } from './modules/users/users.module';
+import { WalletsModule } from './modules/wallets/wallets.module';
 import { PrismaModule } from './prisma/prisma.module';
 
 @Module({
@@ -22,6 +23,7 @@ import { PrismaModule } from './prisma/prisma.module';
     GameCategoriesModule,
     OrdersModule,
     TransactionsModule,
+    WalletsModule,
     SellRequestsModule,
     SupportTicketsModule,
   ],

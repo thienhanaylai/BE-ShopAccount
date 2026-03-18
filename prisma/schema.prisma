@@ -38,6 +38,13 @@ enum TransactionStatus {
   REFUNDED
 }
 
+enum TransactionMethod {
+  TOP_UP
+  WITHDRAW
+  TRANSFER
+  PAYMENT
+}
+
 enum SellRequestStatus {
   PENDING
   APPROVED
@@ -65,6 +72,7 @@ model User {
   updatedAt        DateTime        @updatedAt @map("updated_at")
   orders           Order[]
   transactions     Transaction[]
+  receivedTransactions Transaction[] @relation("TransactionRecipient")
   sellRequests     SellRequest[]
   supportTickets   SupportTicket[]
 
@@ -126,15 +134,19 @@ model Transaction {
   id        String            @id @default(cuid())
   userId    String            @map("user_id")
   orderId   String?           @map("order_id")
+  recipientUserId String?     @map("recipient_user_id")
+  method    TransactionMethod
   price     Int
   status    TransactionStatus @default(PENDING)
   createdAt DateTime          @default(now()) @map("created_at")
   updatedAt DateTime          @updatedAt @map("updated_at")
   user      User              @relation(fields: [userId], references: [id], onDelete: Restrict)
   order     Order?            @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  recipientUser User?         @relation("TransactionRecipient", fields: [recipientUserId], references: [id], onDelete: SetNull)
 
   @@index([userId])
   @@index([orderId])
+  @@index([recipientUserId])
   @@map("transactions")
 }
 

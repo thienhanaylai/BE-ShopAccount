@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, TransactionMethod } from '@prisma/client';
 import { generateId } from '../common/utils/nanoid.util';
 
 const prisma = new PrismaClient();
@@ -53,6 +53,7 @@ async function run(): Promise<void> {
         id: generateId(),
         userId: user.id,
         orderId: order.id,
+        method: TransactionMethod.PAYMENT,
         price: 100000,
       },
     });

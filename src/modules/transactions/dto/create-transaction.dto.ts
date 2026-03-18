@@ -1,4 +1,4 @@
-import { TransactionStatus } from '@prisma/client';
+import { TransactionMethod, TransactionStatus } from '@prisma/client';
 import {
   IsEnum,
   IsInt,
@@ -6,6 +6,7 @@ import {
   IsOptional,
   IsString,
   Min,
+  ValidateIf,
 } from 'class-validator';
 
 export class CreateTransactionDto {
@@ -16,6 +17,16 @@ export class CreateTransactionDto {
   @IsString()
   @IsOptional()
   orderId?: string;
+
+  @IsEnum(TransactionMethod)
+  method: TransactionMethod;
+
+  @ValidateIf(
+    (o: CreateTransactionDto) => o.method === TransactionMethod.TRANSFER,
+  )
+  @IsString()
+  @IsNotEmpty()
+  recipientUserId?: string;
 
   @IsInt()
   @Min(0)

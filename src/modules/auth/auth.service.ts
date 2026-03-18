@@ -72,6 +72,7 @@ export class AuthService {
       sub: user.id,
       email: user.email,
       role: user.role,
+      ver: Math.floor(user.updatedAt.getTime() / 1000),
     };
 
     return {
