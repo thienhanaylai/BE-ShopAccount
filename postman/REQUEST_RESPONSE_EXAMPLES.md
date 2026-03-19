@@ -936,17 +936,21 @@ Header:
 
 - Authorization: Bearer {{authToken}}
 
+Luu y phan quyen:
+
+- User thuong chi xem duoc ticket cua chinh ho.
+- User thuong khong duoc doi `status` qua PATCH.
+- Admin moi duoc start-processing/reply va cap nhat trang thai xu ly.
+
 ### 11.1 POST /support-tickets
 
 Request body:
 
 ```json
 {
-  "userId": "{{userId}}",
   "title": "Cannot login game account",
   "description": "Bought account but login failed",
-  "category": "account",
-  "status": "PENDING"
+  "category": "account"
 }
 ```
 
@@ -960,6 +964,10 @@ Response 201:
   "description": "Bought account but login failed",
   "category": "account",
   "status": "PENDING",
+  "handledBy": null,
+  "handledAt": null,
+  "resolvedAt": null,
+  "replies": [],
   "createdAt": "2026-03-19T09:40:00.000Z",
   "updatedAt": "2026-03-19T09:40:00.000Z"
 }
@@ -999,7 +1007,57 @@ Response 200:
 }
 ```
 
-### 11.5 DELETE /support-tickets/:id
+### 11.5 POST /support-tickets/:id/start-processing (Admin)
+
+Request body: `{}`
+
+Response 200:
+
+```json
+{
+  "id": "st_001",
+  "status": "IN_PROGRESS",
+  "handledBy": "admin_001",
+  "handledAt": "2026-03-19T09:46:00.000Z",
+  "resolvedAt": null
+}
+```
+
+### 11.6 POST /support-tickets/:id/reply (Admin)
+
+Request body:
+
+```json
+{
+  "message": "Da tiep nhan ticket, chung toi dang kiem tra.",
+  "status": "IN_PROGRESS"
+}
+```
+
+Response 200:
+
+```json
+{
+  "id": "st_001",
+  "status": "IN_PROGRESS",
+  "handledBy": "admin_001",
+  "handledAt": "2026-03-19T09:46:00.000Z",
+  "replies": [
+    {
+      "id": "str_001",
+      "message": "Da tiep nhan ticket, chung toi dang kiem tra.",
+      "admin": {
+        "id": "admin_001",
+        "username": "admin",
+        "email": "admin@shopaccount.local"
+      },
+      "createdAt": "2026-03-19T09:47:00.000Z"
+    }
+  ]
+}
+```
+
+### 11.7 DELETE /support-tickets/:id
 
 Response 204: khong co body
 

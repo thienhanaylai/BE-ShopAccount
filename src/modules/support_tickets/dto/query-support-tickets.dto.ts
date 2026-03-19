@@ -30,6 +30,10 @@ export class QuerySupportTicketsDto {
 
   @IsString()
   @IsOptional()
+  handledBy?: string;
+
+  @IsString()
+  @IsOptional()
   category?: string;
 
   @IsString()

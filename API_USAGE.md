@@ -532,17 +532,22 @@ Body:
 
 ```json
 {
-  "userId": "string (required)",
   "title": "string (required)",
   "description": "string (required)",
-  "category": "string (required)",
-  "status": "PENDING|IN_PROGRESS|RESOLVED|REJECTED (optional)"
+  "category": "string (required)"
 }
 ```
+
+`userId` lay tu JWT token hien tai.
 
 ### GET /support-tickets
 
 Lay danh sach.
+
+Phan quyen:
+
+- `CUSTOMER`: chi xem duoc ticket cua chinh minh (bo qua `userId` filter tu client).
+- `ADMIN`: xem duoc toan bo ticket, co the loc theo `userId`, `handledBy`, `status`, ...
 
 ### GET /support-tickets/:id
 
@@ -551,6 +556,30 @@ Lay chi tiet.
 ### PATCH /support-tickets/:id
 
 Cap nhat.
+
+Phan quyen:
+
+- `CUSTOMER`: co the sua noi dung ticket cua chinh minh (`title`, `description`, `category`) nhung KHONG duoc doi `status`.
+- `ADMIN`: duoc cap nhat `status` va cac truong ticket.
+
+### POST /support-tickets/:id/start-processing
+
+Admin only. Danh dau ticket dang xu ly (`IN_PROGRESS`) va gan nguoi xu ly.
+
+### POST /support-tickets/:id/reply
+
+Admin only. Gui phan hoi vao ticket va cap nhat trang thai ticket neu can.
+
+Body:
+
+```json
+{
+  "message": "Da tiep nhan ticket, chung toi dang xu ly.",
+  "status": "IN_PROGRESS|RESOLVED|REJECTED (optional)"
+}
+```
+
+Moi ticket co lich su replies cua admin; `GET /support-tickets` va `GET /support-tickets/:id` se kem thong tin nguoi xu ly (`handler`) va danh sach `replies`.
 
 ### DELETE /support-tickets/:id
 

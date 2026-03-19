@@ -4,10 +4,6 @@ import { IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 export class CreateSupportTicketDto {
   @IsString()
   @IsNotEmpty()
-  userId: string;
-
-  @IsString()
-  @IsNotEmpty()
   title: string;
 
   @IsString()

@@ -637,10 +637,13 @@
           "name": "Create Support Ticket",
           "request": {
             "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"userId\": \"{{userId}}\",\n  \"title\": \"Cannot login\",\n  \"description\": \"Login failed after buying account\",\n  \"category\": \"login\",\n  \"status\": \"PENDING\"\n}"
+              "raw": "{\n  \"title\": \"Cannot login\",\n  \"description\": \"Login failed after buying account\",\n  \"category\": \"login\"\n}"
             },
             "url": "{{baseUrl}}/support-tickets"
           }
@@ -649,6 +652,9 @@
           "name": "Get Support Tickets",
           "request": {
             "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
             "url": "{{baseUrl}}/support-tickets?page=1&limit=20&status=PENDING&search=login"
           }
         },
@@ -656,14 +662,45 @@
           "name": "Get Support Ticket By Id",
           "request": {
             "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
             "url": "{{baseUrl}}/support-tickets/{{supportTicketId}}"
+          }
+        },
+        {
+          "name": "Start Processing Ticket (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "url": "{{baseUrl}}/support-tickets/{{supportTicketId}}/start-processing"
+          }
+        },
+        {
+          "name": "Reply Ticket (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"message\": \"Da tiep nhan ticket, chung toi dang xu ly.\",\n  \"status\": \"IN_PROGRESS\"\n}"
+            },
+            "url": "{{baseUrl}}/support-tickets/{{supportTicketId}}/reply"
           }
         },
         {
           "name": "Update Support Ticket",
           "request": {
             "method": "PATCH",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"status\": \"IN_PROGRESS\"\n}"
@@ -675,6 +712,9 @@
           "name": "Delete Support Ticket",
           "request": {
             "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
             "url": "{{baseUrl}}/support-tickets/{{supportTicketId}}"
           }
         }

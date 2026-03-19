@@ -4,10 +4,6 @@ import { IsEnum, IsOptional, IsString } from 'class-validator';
 export class UpdateSupportTicketDto {
   @IsString()
   @IsOptional()
-  userId?: string;
-
-  @IsString()
-  @IsOptional()
   title?: string;
 
   @IsString()

@@ -75,6 +75,8 @@ model User {
   receivedTransactions Transaction[] @relation("TransactionRecipient")
   sellRequests     SellRequest[]
   supportTickets   SupportTicket[]
+  handledSupportTickets SupportTicket[] @relation("SupportTicketHandledBy")
+  supportTicketReplies SupportTicketReply[]
 
   @@map("users")
 }
@@ -174,10 +176,30 @@ model SupportTicket {
   description String
   category    String
   status      SupportTicketStatus @default(PENDING)
+  handledBy   String?             @map("handled_by")
+  handledAt   DateTime?           @map("handled_at")
+  resolvedAt  DateTime?           @map("resolved_at")
   createdAt   DateTime            @default(now()) @map("created_at")
   updatedAt   DateTime            @updatedAt @map("updated_at")
   user        User                @relation(fields: [userId], references: [id], onDelete: Restrict)
+  handler     User?               @relation("SupportTicketHandledBy", fields: [handledBy], references: [id], onDelete: SetNull)
+  replies     SupportTicketReply[]
 
   @@index([userId])
+  @@index([handledBy])
   @@map("support_tickets")
+}
+
+model SupportTicketReply {
+  id        String        @id @default(cuid())
+  ticketId  String        @map("ticket_id")
+  adminId   String        @map("admin_id")
+  message   String
+  createdAt DateTime      @default(now()) @map("created_at")
+  ticket    SupportTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  admin     User          @relation(fields: [adminId], references: [id], onDelete: Restrict)
+
+  @@index([ticketId])
+  @@index([adminId])
+  @@map("support_ticket_replies")
 }
