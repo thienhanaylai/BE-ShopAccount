@@ -1,0 +1,760 @@
+{
+  "meta": {
+    "generatedAt": "2026-03-19T16:30:00.000Z",
+    "note": "Mock responses for FE temporary integration"
+  },
+  "auth": {
+    "login": {
+      "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.mock.admin.token",
+      "user": {
+        "id": "usr_admin_001",
+        "username": "admin",
+        "email": "admin@shopaccount.vn",
+        "phone": "0909000001",
+        "role": "ADMIN",
+        "status": "ACTIVE"
+      }
+    },
+    "register": {
+      "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.mock.customer.token",
+      "user": {
+        "id": "usr_1001",
+        "username": "new_customer",
+        "email": "new_customer@example.com",
+        "phone": "0911222333",
+        "role": "CUSTOMER",
+        "status": "ACTIVE"
+      }
+    }
+  },
+  "usersList": {
+    "data": [
+      {
+        "id": "usr_1001",
+        "username": "alice",
+        "email": "alice@example.com",
+        "phone": "0911000001",
+        "role": "CUSTOMER",
+        "status": "ACTIVE",
+        "balance": 850000,
+        "createdAt": "2026-03-10T08:00:00.000Z"
+      },
+      {
+        "id": "usr_1002",
+        "username": "bob",
+        "email": "bob@example.com",
+        "phone": "0911000002",
+        "role": "CUSTOMER",
+        "status": "ACTIVE",
+        "balance": 250000,
+        "createdAt": "2026-03-10T09:00:00.000Z"
+      },
+      {
+        "id": "usr_1003",
+        "username": "charlie",
+        "email": "charlie@example.com",
+        "phone": "0911000003",
+        "role": "CUSTOMER",
+        "status": "BLOCKED",
+        "balance": 120000,
+        "createdAt": "2026-03-11T08:00:00.000Z"
+      },
+      {
+        "id": "usr_1004",
+        "username": "diana",
+        "email": "diana@example.com",
+        "phone": "0911000004",
+        "role": "CUSTOMER",
+        "status": "ACTIVE",
+        "balance": 460000,
+        "createdAt": "2026-03-11T09:30:00.000Z"
+      },
+      {
+        "id": "usr_1005",
+        "username": "eric",
+        "email": "eric@example.com",
+        "phone": "0911000005",
+        "role": "CUSTOMER",
+        "status": "ACTIVE",
+        "balance": 98000,
+        "createdAt": "2026-03-12T07:45:00.000Z"
+      },
+      {
+        "id": "usr_1006",
+        "username": "frank",
+        "email": "frank@example.com",
+        "phone": "0911000006",
+        "role": "ADMIN",
+        "status": "ACTIVE",
+        "balance": 1300000,
+        "createdAt": "2026-03-12T10:15:00.000Z"
+      }
+    ],
+    "pagination": {
+      "page": 1,
+      "limit": 20,
+      "total": 6,
+      "totalPages": 1
+    }
+  },
+  "gameCategoriesList": {
+    "data": [
+      {
+        "id": "cat_001",
+        "name": "Valorant",
+        "slug": "valorant",
+        "icon": "https://cdn.mock/valorant.png",
+        "description": "Valorant premium accounts",
+        "isActive": true
+      },
+      {
+        "id": "cat_002",
+        "name": "League of Legends",
+        "slug": "league-of-legends",
+        "icon": "https://cdn.mock/lol.png",
+        "description": "LOL rank accounts",
+        "isActive": true
+      },
+      {
+        "id": "cat_003",
+        "name": "Genshin Impact",
+        "slug": "genshin-impact",
+        "icon": "https://cdn.mock/genshin.png",
+        "description": "Adventure rank accounts",
+        "isActive": true
+      },
+      {
+        "id": "cat_004",
+        "name": "FC Online",
+        "slug": "fc-online",
+        "icon": "https://cdn.mock/fconline.png",
+        "description": "Football team accounts",
+        "isActive": true
+      },
+      {
+        "id": "cat_005",
+        "name": "PUBG",
+        "slug": "pubg",
+        "icon": "https://cdn.mock/pubg.png",
+        "description": "Battle royale accounts",
+        "isActive": false
+      },
+      {
+        "id": "cat_006",
+        "name": "CrossFire",
+        "slug": "crossfire",
+        "icon": "https://cdn.mock/cf.png",
+        "description": "Shooter accounts",
+        "isActive": true
+      }
+    ],
+    "pagination": {
+      "page": 1,
+      "limit": 20,
+      "total": 6,
+      "totalPages": 1
+    }
+  },
+  "gameAccountsList": {
+    "data": [
+      {
+        "id": "ga_001",
+        "categoryId": "cat_001",
+        "username": "valo_pro_01",
+        "email": "valo01@mock.com",
+        "password": "mock_pass_01",
+        "price": 250000,
+        "status": "AVAILABLE",
+        "level": 80,
+        "rank": "Ascendant",
+        "images": ["https://cdn.mock/ga_001_1.png"],
+        "description": "Skin bundle + high rank"
+      },
+      {
+        "id": "ga_002",
+        "categoryId": "cat_002",
+        "username": "lol_challenger_02",
+        "email": "lol02@mock.com",
+        "password": "mock_pass_02",
+        "price": 320000,
+        "status": "SOLD",
+        "level": 210,
+        "rank": "Challenger",
+        "images": ["https://cdn.mock/ga_002_1.png"],
+        "description": "High MMR account"
+      },
+      {
+        "id": "ga_003",
+        "categoryId": "cat_003",
+        "username": "genshin_ar60",
+        "email": "gi03@mock.com",
+        "password": "mock_pass_03",
+        "price": 190000,
+        "status": "AVAILABLE",
+        "level": 60,
+        "rank": "AR60",
+        "images": ["https://cdn.mock/ga_003_1.png"],
+        "description": "Many 5 star characters"
+      },
+      {
+        "id": "ga_004",
+        "categoryId": "cat_004",
+        "username": "fco_team_89",
+        "email": "fco04@mock.com",
+        "password": "mock_pass_04",
+        "price": 150000,
+        "status": "RESERVED",
+        "level": 45,
+        "rank": "Legend",
+        "images": ["https://cdn.mock/ga_004_1.png"],
+        "description": "Top squad value"
+      },
+      {
+        "id": "ga_005",
+        "categoryId": "cat_005",
+        "username": "pubg_ace_05",
+        "email": "pubg05@mock.com",
+        "password": "mock_pass_05",
+        "price": 110000,
+        "status": "HIDDEN",
+        "level": 55,
+        "rank": "Ace",
+        "images": ["https://cdn.mock/ga_005_1.png"],
+        "description": "Rare skins"
+      },
+      {
+        "id": "ga_006",
+        "categoryId": "cat_006",
+        "username": "cf_vip_06",
+        "email": "cf06@mock.com",
+        "password": "mock_pass_06",
+        "price": 99000,
+        "status": "AVAILABLE",
+        "level": 38,
+        "rank": "Master",
+        "images": ["https://cdn.mock/ga_006_1.png"],
+        "description": "VIP weapon set"
+      }
+    ],
+    "pagination": {
+      "page": 1,
+      "limit": 20,
+      "total": 6,
+      "totalPages": 1
+    }
+  },
+  "ordersList": {
+    "data": [
+      {
+        "id": "ord_001",
+        "userId": "usr_1001",
+        "gameAccountId": "ga_002",
+        "price": 320000,
+        "status": "PAID",
+        "createdAt": "2026-03-15T10:00:00.000Z"
+      },
+      {
+        "id": "ord_002",
+        "userId": "usr_1002",
+        "gameAccountId": "ga_004",
+        "price": 150000,
+        "status": "PENDING",
+        "createdAt": "2026-03-15T11:00:00.000Z"
+      },
+      {
+        "id": "ord_003",
+        "userId": "usr_1004",
+        "gameAccountId": "ga_003",
+        "price": 190000,
+        "status": "CANCELLED",
+        "createdAt": "2026-03-16T08:00:00.000Z"
+      },
+      {
+        "id": "ord_004",
+        "userId": "usr_1005",
+        "gameAccountId": "ga_006",
+        "price": 99000,
+        "status": "COMPLETED",
+        "createdAt": "2026-03-16T09:30:00.000Z"
+      },
+      {
+        "id": "ord_005",
+        "userId": "usr_1001",
+        "gameAccountId": "ga_001",
+        "price": 250000,
+        "status": "PENDING",
+        "createdAt": "2026-03-17T14:00:00.000Z"
+      },
+      {
+        "id": "ord_006",
+        "userId": "usr_1006",
+        "gameAccountId": "ga_005",
+        "price": 110000,
+        "status": "PAID",
+        "createdAt": "2026-03-18T07:15:00.000Z"
+      }
+    ],
+    "pagination": {
+      "page": 1,
+      "limit": 20,
+      "total": 6,
+      "totalPages": 1
+    }
+  },
+  "transactionsList": {
+    "data": [
+      {
+        "id": "txn_001",
+        "userId": "usr_1001",
+        "orderId": "ord_001",
+        "recipientUserId": null,
+        "method": "PAYMENT",
+        "price": 320000,
+        "status": "SUCCESS",
+        "createdAt": "2026-03-15T10:02:00.000Z"
+      },
+      {
+        "id": "txn_002",
+        "userId": "usr_1002",
+        "orderId": null,
+        "recipientUserId": null,
+        "method": "TOP_UP",
+        "price": 500000,
+        "status": "SUCCESS",
+        "createdAt": "2026-03-15T10:20:00.000Z"
+      },
+      {
+        "id": "txn_003",
+        "userId": "usr_1002",
+        "orderId": null,
+        "recipientUserId": "usr_1001",
+        "method": "TRANSFER",
+        "price": 50000,
+        "status": "SUCCESS",
+        "createdAt": "2026-03-15T11:10:00.000Z"
+      },
+      {
+        "id": "txn_004",
+        "userId": "usr_1004",
+        "orderId": null,
+        "recipientUserId": null,
+        "method": "WITHDRAW",
+        "price": 100000,
+        "status": "PENDING",
+        "createdAt": "2026-03-16T08:15:00.000Z"
+      },
+      {
+        "id": "txn_005",
+        "userId": "usr_1005",
+        "orderId": "ord_004",
+        "recipientUserId": null,
+        "method": "PAYMENT",
+        "price": 99000,
+        "status": "SUCCESS",
+        "createdAt": "2026-03-16T09:32:00.000Z"
+      },
+      {
+        "id": "txn_006",
+        "userId": "usr_1001",
+        "orderId": null,
+        "recipientUserId": null,
+        "method": "TOP_UP",
+        "price": 200000,
+        "status": "FAILED",
+        "createdAt": "2026-03-18T07:30:00.000Z"
+      }
+    ],
+    "pagination": {
+      "page": 1,
+      "limit": 20,
+      "total": 6,
+      "totalPages": 1
+    }
+  },
+  "sellRequestsList": {
+    "data": [
+      {
+        "id": "sr_001",
+        "userId": "usr_1002",
+        "price": 220000,
+        "status": "PENDING",
+        "description": "Valorant account rank Immortal",
+        "rejectReason": null,
+        "accountUsername": "sell_valo_01",
+        "accountPassword": "sell_mock_01"
+      },
+      {
+        "id": "sr_002",
+        "userId": "usr_1003",
+        "price": 180000,
+        "status": "APPROVED",
+        "description": "LOL account server VN",
+        "rejectReason": null,
+        "accountUsername": "sell_lol_02",
+        "accountPassword": "sell_mock_02"
+      },
+      {
+        "id": "sr_003",
+        "userId": "usr_1004",
+        "price": 140000,
+        "status": "REJECTED",
+        "description": "FC account",
+        "rejectReason": "Thong tin tai khoan khong hop le",
+        "accountUsername": "sell_fc_03",
+        "accountPassword": "sell_mock_03"
+      },
+      {
+        "id": "sr_004",
+        "userId": "usr_1005",
+        "price": 260000,
+        "status": "PENDING",
+        "description": "Genshin AR60",
+        "rejectReason": null,
+        "accountUsername": "sell_gi_04",
+        "accountPassword": "sell_mock_04"
+      },
+      {
+        "id": "sr_005",
+        "userId": "usr_1001",
+        "price": 99000,
+        "status": "APPROVED",
+        "description": "CrossFire VIP",
+        "rejectReason": null,
+        "accountUsername": "sell_cf_05",
+        "accountPassword": "sell_mock_05"
+      },
+      {
+        "id": "sr_006",
+        "userId": "usr_1006",
+        "price": 300000,
+        "status": "PENDING",
+        "description": "PUBG account",
+        "rejectReason": null,
+        "accountUsername": "sell_pubg_06",
+        "accountPassword": "sell_mock_06"
+      }
+    ],
+    "pagination": {
+      "page": 1,
+      "limit": 20,
+      "total": 6,
+      "totalPages": 1
+    }
+  },
+  "supportTicketsList": {
+    "data": [
+      {
+        "id": "st_001",
+        "userId": "usr_1001",
+        "title": "Khong dang nhap duoc account",
+        "description": "Da doi mat khau nhung van loi",
+        "category": "account",
+        "status": "PENDING",
+        "handledBy": null,
+        "handledAt": null,
+        "resolvedAt": null,
+        "createdAt": "2026-03-15T12:00:00.000Z"
+      },
+      {
+        "id": "st_002",
+        "userId": "usr_1002",
+        "title": "Yeu cau hoan tien",
+        "description": "Nap tien nhung chua vao vi",
+        "category": "payment",
+        "status": "IN_PROGRESS",
+        "handledBy": "usr_1006",
+        "handledAt": "2026-03-15T13:20:00.000Z",
+        "resolvedAt": null,
+        "createdAt": "2026-03-15T13:00:00.000Z"
+      },
+      {
+        "id": "st_003",
+        "userId": "usr_1004",
+        "title": "Loi hien thi anh",
+        "description": "Khong load duoc image account",
+        "category": "ui",
+        "status": "RESOLVED",
+        "handledBy": "usr_1006",
+        "handledAt": "2026-03-16T08:40:00.000Z",
+        "resolvedAt": "2026-03-16T09:10:00.000Z",
+        "createdAt": "2026-03-16T08:20:00.000Z"
+      },
+      {
+        "id": "st_004",
+        "userId": "usr_1003",
+        "title": "Tai khoan bi khoa",
+        "description": "Can ho tro mo khoa",
+        "category": "account",
+        "status": "REJECTED",
+        "handledBy": "usr_1006",
+        "handledAt": "2026-03-16T11:20:00.000Z",
+        "resolvedAt": "2026-03-16T11:50:00.000Z",
+        "createdAt": "2026-03-16T11:00:00.000Z"
+      },
+      {
+        "id": "st_005",
+        "userId": "usr_1005",
+        "title": "Loi thanh toan",
+        "description": "Tru tien 2 lan",
+        "category": "payment",
+        "status": "IN_PROGRESS",
+        "handledBy": "usr_1006",
+        "handledAt": "2026-03-17T07:45:00.000Z",
+        "resolvedAt": null,
+        "createdAt": "2026-03-17T07:30:00.000Z"
+      },
+      {
+        "id": "st_006",
+        "userId": "usr_1001",
+        "title": "Khuyen mai moi",
+        "description": "Xin thong tin event nap the",
+        "category": "promotion",
+        "status": "PENDING",
+        "handledBy": null,
+        "handledAt": null,
+        "resolvedAt": null,
+        "createdAt": "2026-03-18T09:00:00.000Z"
+      }
+    ],
+    "pagination": {
+      "page": 1,
+      "limit": 20,
+      "total": 6,
+      "totalPages": 1
+    }
+  },
+  "myPurchases": {
+    "data": [
+      {
+        "id": "ord_001",
+        "userId": "usr_1001",
+        "gameAccountId": "ga_002",
+        "price": 320000,
+        "status": "PAID",
+        "createdAt": "2026-03-15T10:00:00.000Z",
+        "gameAccount": {
+          "id": "ga_002",
+          "username": "lol_challenger_02",
+          "email": "lol02@mock.com",
+          "password": "mock_pass_02",
+          "price": 320000,
+          "status": "SOLD",
+          "level": 210,
+          "rank": "Challenger",
+          "images": ["https://cdn.mock/ga_002_1.png"],
+          "description": "High MMR account",
+          "category": {
+            "id": "cat_002",
+            "name": "League of Legends",
+            "slug": "league-of-legends"
+          }
+        },
+        "transactions": [
+          {
+            "id": "txn_001",
+            "method": "PAYMENT",
+            "status": "SUCCESS",
+            "price": 320000
+          }
+        ]
+      },
+      {
+        "id": "ord_005",
+        "userId": "usr_1001",
+        "gameAccountId": "ga_001",
+        "price": 250000,
+        "status": "PAID",
+        "createdAt": "2026-03-17T14:00:00.000Z",
+        "gameAccount": {
+          "id": "ga_001",
+          "username": "valo_pro_01",
+          "email": "valo01@mock.com",
+          "password": "mock_pass_01",
+          "price": 250000,
+          "status": "SOLD",
+          "level": 80,
+          "rank": "Ascendant",
+          "images": ["https://cdn.mock/ga_001_1.png"],
+          "description": "Skin bundle + high rank",
+          "category": {
+            "id": "cat_001",
+            "name": "Valorant",
+            "slug": "valorant"
+          }
+        },
+        "transactions": [
+          {
+            "id": "txn_007",
+            "method": "PAYMENT",
+            "status": "SUCCESS",
+            "price": 250000
+          }
+        ]
+      },
+      {
+        "id": "ord_007",
+        "userId": "usr_1001",
+        "gameAccountId": "ga_010",
+        "price": 180000,
+        "status": "PAID",
+        "createdAt": "2026-03-18T10:00:00.000Z",
+        "gameAccount": {
+          "id": "ga_010",
+          "username": "genshin_ar58",
+          "email": "gi10@mock.com",
+          "password": "mock_pass_10",
+          "price": 180000,
+          "status": "SOLD",
+          "level": 58,
+          "rank": "AR58",
+          "images": ["https://cdn.mock/ga_010_1.png"],
+          "description": "Many 5 star units",
+          "category": {
+            "id": "cat_003",
+            "name": "Genshin Impact",
+            "slug": "genshin-impact"
+          }
+        },
+        "transactions": [
+          {
+            "id": "txn_008",
+            "method": "PAYMENT",
+            "status": "SUCCESS",
+            "price": 180000
+          }
+        ]
+      },
+      {
+        "id": "ord_008",
+        "userId": "usr_1001",
+        "gameAccountId": "ga_011",
+        "price": 135000,
+        "status": "PAID",
+        "createdAt": "2026-03-18T12:00:00.000Z",
+        "gameAccount": {
+          "id": "ga_011",
+          "username": "fco_team_legend",
+          "email": "fco11@mock.com",
+          "password": "mock_pass_11",
+          "price": 135000,
+          "status": "SOLD",
+          "level": 40,
+          "rank": "Legend",
+          "images": ["https://cdn.mock/ga_011_1.png"],
+          "description": "Good squad value",
+          "category": {
+            "id": "cat_004",
+            "name": "FC Online",
+            "slug": "fc-online"
+          }
+        },
+        "transactions": [
+          {
+            "id": "txn_009",
+            "method": "PAYMENT",
+            "status": "SUCCESS",
+            "price": 135000
+          }
+        ]
+      },
+      {
+        "id": "ord_009",
+        "userId": "usr_1001",
+        "gameAccountId": "ga_012",
+        "price": 99000,
+        "status": "PAID",
+        "createdAt": "2026-03-18T14:20:00.000Z",
+        "gameAccount": {
+          "id": "ga_012",
+          "username": "cf_vip_legend",
+          "email": "cf12@mock.com",
+          "password": "mock_pass_12",
+          "price": 99000,
+          "status": "SOLD",
+          "level": 37,
+          "rank": "Master",
+          "images": ["https://cdn.mock/ga_012_1.png"],
+          "description": "VIP set",
+          "category": {
+            "id": "cat_006",
+            "name": "CrossFire",
+            "slug": "crossfire"
+          }
+        },
+        "transactions": [
+          {
+            "id": "txn_010",
+            "method": "PAYMENT",
+            "status": "SUCCESS",
+            "price": 99000
+          }
+        ]
+      },
+      {
+        "id": "ord_010",
+        "userId": "usr_1001",
+        "gameAccountId": "ga_013",
+        "price": 210000,
+        "status": "PAID",
+        "createdAt": "2026-03-19T08:45:00.000Z",
+        "gameAccount": {
+          "id": "ga_013",
+          "username": "valo_immortal_13",
+          "email": "valo13@mock.com",
+          "password": "mock_pass_13",
+          "price": 210000,
+          "status": "SOLD",
+          "level": 75,
+          "rank": "Immortal",
+          "images": ["https://cdn.mock/ga_013_1.png"],
+          "description": "Good skins + rank",
+          "category": {
+            "id": "cat_001",
+            "name": "Valorant",
+            "slug": "valorant"
+          }
+        },
+        "transactions": [
+          {
+            "id": "txn_011",
+            "method": "PAYMENT",
+            "status": "SUCCESS",
+            "price": 210000
+          }
+        ]
+      }
+    ],
+    "pagination": {
+      "page": 1,
+      "limit": 20,
+      "total": 6,
+      "totalPages": 1
+    }
+  },
+  "websiteSettings": {
+    "id": "default",
+    "siteName": "ShopAccount Pro",
+    "siteDescription": "Nen tang mua ban account game tu dong",
+    "contactEmail": "admin@shopaccount.vn",
+    "contactPhone": "1900 8888",
+    "commissionRate": 7,
+    "minWithdraw": 200000,
+    "withdrawFee": 8000,
+    "viettelDiscount": 18,
+    "vinaphoneDiscount": 19,
+    "mobifoneDiscount": 19,
+    "vietnamobileDiscount": 22,
+    "emailNotifications": true,
+    "smsNotifications": true,
+    "orderNotifications": true,
+    "depositNotifications": true,
+    "requireEmailVerification": true,
+    "requirePhoneVerification": true,
+    "twoFactorAuth": true,
+    "maintenanceMode": false,
+    "maintenanceMessage": "He thong dang nang cap, vui long quay lai sau",
+    "updatedBy": "usr_admin_001",
+    "createdAt": "2026-03-19T12:00:00.000Z",
+    "updatedAt": "2026-03-19T12:30:00.000Z"
+  }
+}

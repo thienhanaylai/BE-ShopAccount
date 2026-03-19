@@ -14,6 +14,7 @@ import { UsersModule } from './modules/users/users.module';
 import { WalletsModule } from './modules/wallets/wallets.module';
 import { MediaModule } from 'src/modules/media/media.module';
 import { AccountTradesModule } from './modules/account_trades/account_trades.module';
+import { WebsiteSettingsModule } from './modules/website_settings/website_settings.module';
 import { PrismaModule } from './prisma/prisma.module';
 
 @Module({
@@ -30,6 +31,7 @@ import { PrismaModule } from './prisma/prisma.module';
     TransactionsModule,
     WalletsModule,
     AccountTradesModule,
+    WebsiteSettingsModule,
     SellRequestsModule,
     SupportTicketsModule,
   ],

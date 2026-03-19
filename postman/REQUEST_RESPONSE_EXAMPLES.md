@@ -1473,3 +1473,98 @@ Response 200:
   "updatedAt": "2026-03-19T11:15:00.000Z"
 }
 ```
+
+## 15. Website Settings (can JWT, ADMIN only)
+
+Header:
+
+- Authorization: Bearer {{authToken}}
+
+### 15.1 GET /website-settings
+
+Response 200:
+
+```json
+{
+  "id": "default",
+  "siteName": "GameAccount.vn",
+  "siteDescription": "Mua ban tai khoan game uy tin #1 Viet Nam",
+  "contactEmail": "support@gameaccount.vn",
+  "contactPhone": "1900 xxxx",
+  "commissionRate": 5,
+  "minWithdraw": 100000,
+  "withdrawFee": 5000,
+  "viettelDiscount": 20,
+  "vinaphoneDiscount": 20,
+  "mobifoneDiscount": 20,
+  "vietnamobileDiscount": 25,
+  "emailNotifications": true,
+  "smsNotifications": false,
+  "orderNotifications": true,
+  "depositNotifications": true,
+  "requireEmailVerification": true,
+  "requirePhoneVerification": false,
+  "twoFactorAuth": false,
+  "maintenanceMode": false,
+  "maintenanceMessage": "He thong dang bao tri, vui long quay lai sau",
+  "updatedBy": "admin_001",
+  "createdAt": "2026-03-19T12:00:00.000Z",
+  "updatedAt": "2026-03-19T12:00:00.000Z"
+}
+```
+
+### 15.2 PATCH /website-settings
+
+Request body:
+
+```json
+{
+  "siteName": "ShopAccount Pro",
+  "contactEmail": "admin@shopaccount.vn",
+  "commissionRate": 7,
+  "withdrawFee": 8000,
+  "maintenanceMode": true,
+  "maintenanceMessage": "He thong dang bao tri tu 23:00 den 01:00"
+}
+```
+
+Response 200:
+
+```json
+{
+  "id": "default",
+  "siteName": "ShopAccount Pro",
+  "siteDescription": "Mua ban tai khoan game uy tin #1 Viet Nam",
+  "contactEmail": "admin@shopaccount.vn",
+  "contactPhone": "1900 xxxx",
+  "commissionRate": 7,
+  "minWithdraw": 100000,
+  "withdrawFee": 8000,
+  "viettelDiscount": 20,
+  "vinaphoneDiscount": 20,
+  "mobifoneDiscount": 20,
+  "vietnamobileDiscount": 25,
+  "emailNotifications": true,
+  "smsNotifications": false,
+  "orderNotifications": true,
+  "depositNotifications": true,
+  "requireEmailVerification": true,
+  "requirePhoneVerification": false,
+  "twoFactorAuth": false,
+  "maintenanceMode": true,
+  "maintenanceMessage": "He thong dang bao tri tu 23:00 den 01:00",
+  "updatedBy": "admin_001",
+  "createdAt": "2026-03-19T12:00:00.000Z",
+  "updatedAt": "2026-03-19T12:10:00.000Z"
+}
+```
+
+Response loi 403:
+
+```json
+{
+  "statusCode": 403,
+  "message": "Admin role required",
+  "error": "Forbidden"
+}
+```

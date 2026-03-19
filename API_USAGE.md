@@ -810,3 +810,85 @@ Format response list thong nhat:
   }
 }
 ```
+
+## 19) Website Settings (can JWT, admin only)
+
+Module quan ly cac cai dat website dang dung theo mo hinh singleton (1 ban ghi mac dinh voi `id = "default"`).
+
+Tat ca endpoint duoi day deu can:
+
+- JWT hop le
+- Role `ADMIN`
+
+### GET /website-settings
+
+Lay toan bo cau hinh website hien tai.
+
+Response 200:
+
+```json
+{
+  "id": "default",
+  "siteName": "GameAccount.vn",
+  "siteDescription": "Mua ban tai khoan game uy tin #1 Viet Nam",
+  "contactEmail": "support@gameaccount.vn",
+  "contactPhone": "1900 xxxx",
+  "commissionRate": 5,
+  "minWithdraw": 100000,
+  "withdrawFee": 5000,
+  "viettelDiscount": 20,
+  "vinaphoneDiscount": 20,
+  "mobifoneDiscount": 20,
+  "vietnamobileDiscount": 25,
+  "emailNotifications": true,
+  "smsNotifications": false,
+  "orderNotifications": true,
+  "depositNotifications": true,
+  "requireEmailVerification": true,
+  "requirePhoneVerification": false,
+  "twoFactorAuth": false,
+  "maintenanceMode": false,
+  "maintenanceMessage": "He thong dang bao tri, vui long quay lai sau",
+  "updatedBy": "admin_user_id",
+  "createdAt": "2026-03-19T12:00:00.000Z",
+  "updatedAt": "2026-03-19T12:00:00.000Z"
+}
+```
+
+### PATCH /website-settings
+
+Cap nhat mot phan hoac toan bo thong so website.
+
+Body (tat ca field deu optional):
+
+```json
+{
+  "siteName": "ShopAccount Pro",
+  "siteDescription": "Nen tang mua ban account game tu dong",
+  "contactEmail": "admin@shopaccount.vn",
+  "contactPhone": "1900 8888",
+  "commissionRate": 7,
+  "minWithdraw": 200000,
+  "withdrawFee": 8000,
+  "viettelDiscount": 18,
+  "vinaphoneDiscount": 19,
+  "mobifoneDiscount": 19,
+  "vietnamobileDiscount": 22,
+  "emailNotifications": true,
+  "smsNotifications": true,
+  "orderNotifications": true,
+  "depositNotifications": true,
+  "requireEmailVerification": true,
+  "requirePhoneVerification": true,
+  "twoFactorAuth": true,
+  "maintenanceMode": false,
+  "maintenanceMessage": "He thong dang nang cap, vui long quay lai sau"
+}
+```
+
+Response 200: tra ve object setting sau khi cap nhat.
+
+Loi thuong gap:
+
+- `403` Admin role required
+- `400` Validation loi (vi du email khong hop le, discount > 100, so am, ...)

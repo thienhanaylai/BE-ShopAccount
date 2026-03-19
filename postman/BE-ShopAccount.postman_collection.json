@@ -631,6 +631,36 @@
       ]
     },
     {
+      "name": "Website Settings",
+      "item": [
+        {
+          "name": "Get Website Settings (Admin)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "url": "{{baseUrl}}/website-settings"
+          }
+        },
+        {
+          "name": "Update Website Settings (Admin)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"siteName\": \"ShopAccount Pro\",\n  \"contactEmail\": \"admin@shopaccount.vn\",\n  \"commissionRate\": 7,\n  \"withdrawFee\": 8000,\n  \"maintenanceMode\": true,\n  \"maintenanceMessage\": \"He thong dang bao tri tu 23:00 den 01:00\"\n}"
+            },
+            "url": "{{baseUrl}}/website-settings"
+          }
+        }
+      ]
+    },
+    {
       "name": "Support Tickets",
       "item": [
         {
