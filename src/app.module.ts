@@ -13,6 +13,7 @@ import { TransactionsModule } from './modules/transactions/transactions.module';
 import { UsersModule } from './modules/users/users.module';
 import { WalletsModule } from './modules/wallets/wallets.module';
 import { MediaModule } from 'src/modules/media/media.module';
+import { AccountTradesModule } from './modules/account_trades/account_trades.module';
 import { PrismaModule } from './prisma/prisma.module';
 
 @Module({
@@ -28,6 +29,7 @@ import { PrismaModule } from './prisma/prisma.module';
     MediaModule,
     TransactionsModule,
     WalletsModule,
+    AccountTradesModule,
     SellRequestsModule,
     SupportTicketsModule,
   ],

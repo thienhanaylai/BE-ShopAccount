@@ -602,3 +602,182 @@ curl -X POST http://localhost:3000/media/upload \
   - `CLOUDINARY_API_SECRET`
 - `Order.gameAccountId` la unique trong DB: 1 game account chi thuoc 1 order.
 - Nhiem vu phan quyen hien tai chu yeu nam o guard JWT va check role tai route admin wallet.
+
+## 17) Account Trades (can JWT)
+
+Module moi de dong bo luong mua ban account:
+
+- Mua account: tru so du vi + tao order + tao transaction PAYMENT + doi trang thai account -> SOLD trong cung 1 transaction DB.
+- Duyet/Tu choi yeu cau ban: endpoint cho admin xu ly sell request PENDING.
+
+### GET /account-trades/me/purchases?page=1&limit=20
+
+Lay lich su account da mua cua user dang dang nhap.
+
+Query:
+
+- `page` (optional, int >= 1, default 1)
+- `limit` (optional, int >= 1, max 100, default 20)
+
+Response 200:
+
+```json
+{
+  "data": [
+    {
+      "id": "ORD001",
+      "userId": "USR001",
+      "gameAccountId": "GA001",
+      "price": 120000,
+      "status": "PAID",
+      "createdAt": "2026-03-19T11:00:00.000Z",
+      "updatedAt": "2026-03-19T11:00:00.000Z",
+      "gameAccount": {
+        "id": "GA001",
+        "category": {
+          "id": "CAT001",
+          "name": "Valorant",
+          "slug": "valorant"
+        },
+        "username": "account_login",
+        "email": "account@example.com",
+        "password": "plain-password",
+        "price": 120000,
+        "status": "SOLD",
+        "level": 20,
+        "rank": "Gold",
+        "images": ["https://..."],
+        "description": "..."
+      },
+      "transactions": [
+        {
+          "id": "TXN001",
+          "method": "PAYMENT",
+          "status": "SUCCESS",
+          "price": 120000
+        }
+      ]
+    }
+  ],
+  "pagination": {
+    "page": 1,
+    "limit": 20,
+    "total": 1,
+    "totalPages": 1
+  }
+}
+```
+
+### POST /account-trades/buy/:gameAccountId
+
+Body (optional):
+
+```json
+{
+  "expectedPrice": 120000
+}
+```
+
+`expectedPrice` dung de tranh race-condition gia (gia tren UI khac gia hien tai).
+
+Response 201:
+
+```json
+{
+  "message": "Buy account success",
+  "buyer": {
+    "userId": "USR001",
+    "balanceBefore": 500000,
+    "balanceAfter": 380000,
+    "balanceUpdatedAt": "2026-03-19T11:00:00.000Z"
+  },
+  "order": {
+    "id": "ORD001",
+    "userId": "USR001",
+    "gameAccountId": "GA001",
+    "price": 120000,
+    "status": "PAID"
+  },
+  "transaction": {
+    "id": "TXN001",
+    "userId": "USR001",
+    "orderId": "ORD001",
+    "method": "PAYMENT",
+    "price": 120000,
+    "status": "SUCCESS"
+  },
+  "purchasedAccount": {
+    "id": "GA001",
+    "categoryId": "CAT001",
+    "username": "account_login",
+    "email": "account@example.com",
+    "password": "plain-password",
+    "rank": "Gold",
+    "level": 20,
+    "images": ["https://..."],
+    "description": "...",
+    "soldPrice": 120000,
+    "status": "SOLD"
+  }
+}
+```
+
+Loi thuong gap:
+
+- `400` Game account is not available
+- `400` Game account has been sold already
+- `400` Insufficient balance
+- `400` Price has changed, refresh and retry
+- `404` GameAccount not found
+
+### POST /account-trades/sell-requests/:id/approve
+
+Admin only. Chi xu ly duoc request dang `PENDING`.
+
+Response 200: tra ve sell request da doi status -> `APPROVED`.
+
+### POST /account-trades/sell-requests/:id/reject
+
+Admin only.
+
+Body:
+
+```json
+{
+  "reason": "Thong tin account khong hop le"
+}
+```
+
+Response 200: tra ve sell request da doi status -> `REJECTED` va gan `rejectReason`.
+
+## 18) Bo loc da bo sung cho cac endpoint danh sach
+
+Tat ca endpoint list da ho tro pagination:
+
+- `page` (default `1`)
+- `limit` (default `20`, max `100`)
+
+Chi tiet tung module:
+
+- `GET /users`: `search`, `role`, `status`
+- `GET /game-categories`: `search`, `isActive`
+- `GET /game-accounts`: `search`, `categoryId`, `status`, `minPrice`, `maxPrice`
+- `GET /orders`: `userId`, `gameAccountId`, `status`, `fromDate`, `toDate`
+- `GET /transactions`: `userId`, `orderId`, `recipientUserId`, `method`, `status`, `fromDate`, `toDate`
+- `GET /sell-requests`: `userId`, `status`, `minPrice`, `maxPrice`, `fromDate`, `toDate`
+- `GET /support-tickets`: `userId`, `category`, `status`, `search`, `fromDate`, `toDate`
+- `GET /account-trades/me/purchases`: `page`, `limit`
+
+Format response list thong nhat:
+
+```json
+{
+  "data": [],
+  "pagination": {
+    "page": 1,
+    "limit": 20,
+    "total": 0,
+    "totalPages": 0
+  }
+}
+```

@@ -4,6 +4,7 @@ import { PrismaService } from '../../prisma/prisma.service';
 import { generateId } from '../../common/utils/nanoid.util';
 import { MediaService } from '../media/media.service';
 import { CreateGameAccountDto } from './dto/create-game-account.dto';
+import { QueryGameAccountsDto } from './dto/query-game-accounts.dto';
 import { UpdateGameAccountDto } from './dto/update-game-account.dto';
 
 @Injectable()
@@ -40,8 +41,69 @@ export class GameAccountsService {
     });
   }
 
-  async findAll(): Promise<GameAccount[]> {
-    return this.prisma.gameAccount.findMany({ orderBy: { createdAt: 'desc' } });
+  async findAll(query: QueryGameAccountsDto): Promise<{
+    data: GameAccount[];
+    pagination: {
+      page: number;
+      limit: number;
+      total: number;
+      totalPages: number;
+    };
+  }> {
+    const page = query.page ?? 1;
+    const limit = query.limit ?? 20;
+    const skip = (page - 1) * limit;
+
+    const where: {
+      categoryId?: string;
+      status?: 'AVAILABLE' | 'RESERVED' | 'SOLD' | 'HIDDEN';
+      price?: { gte?: number; lte?: number };
+      OR?: Array<
+        | { username: { contains: string; mode: 'insensitive' } }
+        | { email: { contains: string; mode: 'insensitive' } }
+        | { rank: { contains: string; mode: 'insensitive' } }
+        | { description: { contains: string; mode: 'insensitive' } }
+      >;
+    } = {};
+
+    if (query.categoryId) where.categoryId = query.categoryId;
+    if (query.status) where.status = query.status;
+
+    if (query.minPrice !== undefined || query.maxPrice !== undefined) {
+      where.price = {};
+      if (query.minPrice !== undefined) where.price.gte = query.minPrice;
+      if (query.maxPrice !== undefined) where.price.lte = query.maxPrice;
+    }
+
+    if (query.search?.trim()) {
+      const keyword = query.search.trim();
+      where.OR = [
+        { username: { contains: keyword, mode: 'insensitive' } },
+        { email: { contains: keyword, mode: 'insensitive' } },
+        { rank: { contains: keyword, mode: 'insensitive' } },
+        { description: { contains: keyword, mode: 'insensitive' } },
+      ];
+    }
+
+    const [data, total] = await this.prisma.$transaction([
+      this.prisma.gameAccount.findMany({
+        where,
+        orderBy: { createdAt: 'desc' },
+        skip,
+        take: limit,
+      }),
+      this.prisma.gameAccount.count({ where }),
+    ]);
+
+    return {
+      data,
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
+      },
+    };
   }
 
   async findOne(id: string): Promise<GameAccount> {

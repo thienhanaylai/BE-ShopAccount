@@ -8,10 +8,12 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { SupportTicketsService } from './support_tickets.service';
 import { CreateSupportTicketDto } from './dto/create-support-ticket.dto';
+import { QuerySupportTicketsDto } from './dto/query-support-tickets.dto';
 import { UpdateSupportTicketDto } from './dto/update-support-ticket.dto';
 import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
 
@@ -27,8 +29,8 @@ export class SupportTicketsController {
   }
 
   @Get()
-  findAll() {
-    return this.service.findAll();
+  findAll(@Query() query: QuerySupportTicketsDto) {
+    return this.service.findAll(query);
   }
 
   @Get(':id')

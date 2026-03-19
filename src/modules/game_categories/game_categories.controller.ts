@@ -9,6 +9,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   UploadedFile,
   UseInterceptors,
   ValidationPipe,
@@ -17,6 +18,7 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { GameCategoriesService } from './game_categories.service';
 import { CreateGameCategoryDto } from './dto/create-game-category.dto';
+import { QueryGameCategoriesDto } from './dto/query-game-categories.dto';
 import { UpdateGameCategoryDto } from './dto/update-game-category.dto';
 
 @Controller('game-categories')
@@ -58,8 +60,8 @@ export class GameCategoriesController {
   }
 
   @Get()
-  findAll() {
-    return this.service.findAll();
+  findAll(@Query() query: QueryGameCategoriesDto) {
+    return this.service.findAll(query);
   }
 
   @Get(':id')

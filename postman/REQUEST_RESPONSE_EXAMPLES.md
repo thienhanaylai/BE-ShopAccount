@@ -1227,3 +1227,191 @@ Cach xu ly nhanh:
 7. Co vi pham rule business (so du, role admin, transfer cung user) khong?
 
 Neu can, chay lai theo thu tu: register/login -> luu token -> tao du lieu nen (category/account/user) -> goi endpoint can test.
+
+## 14. Account Trades (module moi)
+
+Tat ca endpoint can JWT.
+
+Header:
+
+- Authorization: Bearer {{authToken}}
+
+### 14.0 GET /account-trades/me/purchases?page=1&limit=20
+
+Lay lich su account da mua cua user hien tai.
+
+Response 200:
+
+```json
+{
+  "data": [
+    {
+      "id": "ORD001",
+      "userId": "USR001",
+      "gameAccountId": "GA001",
+      "price": 120000,
+      "status": "PAID",
+      "createdAt": "2026-03-19T11:00:00.000Z",
+      "updatedAt": "2026-03-19T11:00:00.000Z",
+      "gameAccount": {
+        "id": "GA001",
+        "categoryId": "CAT001",
+        "username": "acc_login",
+        "email": "acc@mail.com",
+        "password": "acc_password",
+        "price": 120000,
+        "status": "SOLD",
+        "level": 20,
+        "rank": "Gold",
+        "images": ["https://res.cloudinary.com/demo/image/upload/v1/ga1.png"],
+        "description": "Postman created account"
+      },
+      "transactions": [
+        {
+          "id": "TXN001",
+          "userId": "USR001",
+          "orderId": "ORD001",
+          "method": "PAYMENT",
+          "price": 120000,
+          "status": "SUCCESS"
+        }
+      ]
+    }
+  ],
+  "pagination": {
+    "page": 1,
+    "limit": 20,
+    "total": 1,
+    "totalPages": 1
+  }
+}
+```
+
+### 14.1 POST /account-trades/buy/{{gameAccountId}}
+
+Request body (co the de `{}` neu khong can check gia):
+
+```json
+{
+  "expectedPrice": 120000
+}
+```
+
+Response 201:
+
+```json
+{
+  "message": "Buy account success",
+  "buyer": {
+    "userId": "USR001",
+    "balanceBefore": 500000,
+    "balanceAfter": 380000,
+    "balanceUpdatedAt": "2026-03-19T11:00:00.000Z"
+  },
+  "order": {
+    "id": "ORD001",
+    "userId": "USR001",
+    "gameAccountId": "GA001",
+    "price": 120000,
+    "status": "PAID",
+    "createdAt": "2026-03-19T11:00:00.000Z",
+    "updatedAt": "2026-03-19T11:00:00.000Z"
+  },
+  "transaction": {
+    "id": "TXN001",
+    "userId": "USR001",
+    "orderId": "ORD001",
+    "recipientUserId": null,
+    "method": "PAYMENT",
+    "price": 120000,
+    "status": "SUCCESS",
+    "createdAt": "2026-03-19T11:00:00.000Z",
+    "updatedAt": "2026-03-19T11:00:00.000Z"
+  },
+  "purchasedAccount": {
+    "id": "GA001",
+    "categoryId": "CAT001",
+    "username": "acc_login",
+    "email": "acc@mail.com",
+    "password": "acc_password",
+    "rank": "Gold",
+    "level": 20,
+    "images": ["https://res.cloudinary.com/demo/image/upload/v1/ga1.png"],
+    "description": "Postman created account",
+    "soldPrice": 120000,
+    "status": "SOLD"
+  }
+}
+```
+
+Response loi 400 (vi du):
+
+```json
+{
+  "statusCode": 400,
+  "message": "Insufficient balance",
+  "error": "Bad Request"
+}
+```
+
+### 14.2 POST /account-trades/sell-requests/{{sellRequestId}}/approve
+
+Chi danh cho ADMIN.
+
+Request body: de trong (`{}`)
+
+Response 200:
+
+```json
+{
+  "id": "SR001",
+  "userId": "USR002",
+  "price": 300000,
+  "status": "APPROVED",
+  "description": "Account rank Diamond",
+  "rejectReason": null,
+  "accountUsername": "seller_game_acc",
+  "accountPassword": "seller_pass_001",
+  "createdAt": "2026-03-19T10:00:00.000Z",
+  "updatedAt": "2026-03-19T11:10:00.000Z"
+}
+```
+
+Response loi 403:
+
+```json
+{
+  "statusCode": 403,
+  "message": "Admin role required",
+  "error": "Forbidden"
+}
+```
+
+### 14.3 POST /account-trades/sell-requests/{{sellRequestId}}/reject
+
+Chi danh cho ADMIN.
+
+Request body:
+
+```json
+{
+  "reason": "Thong tin account khong hop le"
+}
+```
+
+Response 200:
+
+```json
+{
+  "id": "SR001",
+  "userId": "USR002",
+  "price": 300000,
+  "status": "REJECTED",
+  "description": "Account rank Diamond",
+  "rejectReason": "Thong tin account khong hop le",
+  "accountUsername": "seller_game_acc",
+  "accountPassword": "seller_pass_001",
+  "createdAt": "2026-03-19T10:00:00.000Z",
+  "updatedAt": "2026-03-19T11:15:00.000Z"
+}
+```

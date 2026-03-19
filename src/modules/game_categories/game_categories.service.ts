@@ -8,6 +8,7 @@ import { PrismaService } from '../../prisma/prisma.service';
 import { generateId } from '../../common/utils/nanoid.util';
 import { MediaService } from '../media/media.service';
 import { CreateGameCategoryDto } from './dto/create-game-category.dto';
+import { QueryGameCategoriesDto } from './dto/query-game-categories.dto';
 import { UpdateGameCategoryDto } from './dto/update-game-category.dto';
 
 @Injectable()
@@ -43,10 +44,55 @@ export class GameCategoriesService {
     });
   }
 
-  async findAll(): Promise<GameCategory[]> {
-    return this.prisma.gameCategory.findMany({
-      orderBy: { createdAt: 'desc' },
-    });
+  async findAll(query: QueryGameCategoriesDto): Promise<{
+    data: GameCategory[];
+    pagination: {
+      page: number;
+      limit: number;
+      total: number;
+      totalPages: number;
+    };
+  }> {
+    const page = query.page ?? 1;
+    const limit = query.limit ?? 20;
+    const skip = (page - 1) * limit;
+
+    const where: {
+      isActive?: boolean;
+      OR?: Array<{
+        name?: { contains: string; mode: 'insensitive' };
+        slug?: { contains: string; mode: 'insensitive' };
+      }>;
+    } = {};
+
+    if (query.isActive !== undefined) where.isActive = query.isActive;
+    if (query.search?.trim()) {
+      const keyword = query.search.trim();
+      where.OR = [
+        { name: { contains: keyword, mode: 'insensitive' } },
+        { slug: { contains: keyword, mode: 'insensitive' } },
+      ];
+    }
+
+    const [data, total] = await this.prisma.$transaction([
+      this.prisma.gameCategory.findMany({
+        where,
+        orderBy: { createdAt: 'desc' },
+        skip,
+        take: limit,
+      }),
+      this.prisma.gameCategory.count({ where }),
+    ]);
+
+    return {
+      data,
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
+      },
+    };
   }
 
   async findOne(id: string): Promise<GameCategory> {

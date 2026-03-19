@@ -8,10 +8,12 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { SellRequestsService } from './sell_requests.service';
 import { CreateSellRequestDto } from './dto/create-sell-request.dto';
+import { QuerySellRequestsDto } from './dto/query-sell-requests.dto';
 import { UpdateSellRequestDto } from './dto/update-sell-request.dto';
 import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
 
@@ -27,8 +29,8 @@ export class SellRequestsController {
   }
 
   @Get()
-  findAll() {
-    return this.service.findAll();
+  findAll(@Query() query: QuerySellRequestsDto) {
+    return this.service.findAll(query);
   }
 
   @Get(':id')

@@ -9,6 +9,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   UploadedFiles,
   UseInterceptors,
   ValidationPipe,
@@ -16,6 +17,7 @@ import {
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { GameAccountsService } from './game_accounts.service';
 import { CreateGameAccountDto } from './dto/create-game-account.dto';
+import { QueryGameAccountsDto } from './dto/query-game-accounts.dto';
 import { UpdateGameAccountDto } from './dto/update-game-account.dto';
 
 @Controller('game-accounts')
@@ -57,8 +59,8 @@ export class GameAccountsController {
   }
 
   @Get()
-  findAll() {
-    return this.service.findAll();
+  findAll(@Query() query: QueryGameAccountsDto) {
+    return this.service.findAll(query);
   }
 
   @Get(':id')

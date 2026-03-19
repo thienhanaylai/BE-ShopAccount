@@ -70,7 +70,7 @@
             "header": [
               { "key": "Authorization", "value": "Bearer {{authToken}}" }
             ],
-            "url": "{{baseUrl}}/users"
+            "url": "{{baseUrl}}/users?page=1&limit=20&search=user"
           }
         },
         {
@@ -152,7 +152,10 @@
         },
         {
           "name": "Get Game Categories",
-          "request": { "method": "GET", "url": "{{baseUrl}}/game-categories" }
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/game-categories?page=1&limit=20&search=valorant"
+          }
         },
         {
           "name": "Get Game Category By Id",
@@ -249,7 +252,10 @@
         },
         {
           "name": "Get Game Accounts",
-          "request": { "method": "GET", "url": "{{baseUrl}}/game-accounts" }
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/game-accounts?page=1&limit=20&status=AVAILABLE&minPrice=100000"
+          }
         },
         {
           "name": "Get Game Account By Id",
@@ -337,7 +343,10 @@
         },
         {
           "name": "Get Orders",
-          "request": { "method": "GET", "url": "{{baseUrl}}/orders" }
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/orders?page=1&limit=20&status=PAID"
+          }
         },
         {
           "name": "Get Order By Id",
@@ -393,7 +402,10 @@
         },
         {
           "name": "Get Transactions",
-          "request": { "method": "GET", "url": "{{baseUrl}}/transactions" }
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/transactions?page=1&limit=20&method=PAYMENT&status=SUCCESS"
+          }
         },
         {
           "name": "Get Transaction By Id",
@@ -525,7 +537,10 @@
         },
         {
           "name": "Get Sell Requests",
-          "request": { "method": "GET", "url": "{{baseUrl}}/sell-requests" }
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/sell-requests?page=1&limit=20&status=PENDING"
+          }
         },
         {
           "name": "Get Sell Request By Id",
@@ -556,6 +571,66 @@
       ]
     },
     {
+      "name": "Account Trades",
+      "item": [
+        {
+          "name": "Get My Purchased Accounts",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "url": "{{baseUrl}}/account-trades/me/purchases?page=1&limit=20"
+          }
+        },
+        {
+          "name": "Buy Account",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"expectedPrice\": 130000\n}"
+            },
+            "url": "{{baseUrl}}/account-trades/buy/{{gameAccountId}}"
+          }
+        },
+        {
+          "name": "Approve Sell Request (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            },
+            "url": "{{baseUrl}}/account-trades/sell-requests/{{sellRequestId}}/approve"
+          }
+        },
+        {
+          "name": "Reject Sell Request (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reason\": \"Thong tin account khong hop le\"\n}"
+            },
+            "url": "{{baseUrl}}/account-trades/sell-requests/{{sellRequestId}}/reject"
+          }
+        }
+      ]
+    },
+    {
       "name": "Support Tickets",
       "item": [
         {
@@ -572,7 +647,10 @@
         },
         {
           "name": "Get Support Tickets",
-          "request": { "method": "GET", "url": "{{baseUrl}}/support-tickets" }
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/support-tickets?page=1&limit=20&status=PENDING&search=login"
+          }
         },
         {
           "name": "Get Support Ticket By Id",
