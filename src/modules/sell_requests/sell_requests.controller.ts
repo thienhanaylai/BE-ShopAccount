@@ -8,12 +8,15 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { SellRequestsService } from './sell_requests.service';
 import { CreateSellRequestDto } from './dto/create-sell-request.dto';
 import { UpdateSellRequestDto } from './dto/update-sell-request.dto';
+import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
 
 @Controller('sell-requests')
+@UseGuards(JwtAuthGuard)
 export class SellRequestsController {
   constructor(private readonly service: SellRequestsService) {}
 

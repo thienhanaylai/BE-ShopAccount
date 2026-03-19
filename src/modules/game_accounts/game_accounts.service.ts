@@ -2,18 +2,40 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { GameAccount } from '@prisma/client';
 import { PrismaService } from '../../prisma/prisma.service';
 import { generateId } from '../../common/utils/nanoid.util';
+import { MediaService } from '../media/media.service';
 import { CreateGameAccountDto } from './dto/create-game-account.dto';
 import { UpdateGameAccountDto } from './dto/update-game-account.dto';
 
 @Injectable()
 export class GameAccountsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly mediaService: MediaService,
+  ) {}
 
-  async create(dto: CreateGameAccountDto): Promise<GameAccount> {
+  async create(
+    dto: CreateGameAccountDto,
+    imageFiles?: Express.Multer.File[],
+  ): Promise<GameAccount> {
+    let images = dto.images ?? [];
+
+    if (imageFiles?.length) {
+      const uploadedImages = await Promise.all(
+        imageFiles.map((file) =>
+          this.mediaService.uploadImage(file, {
+            folder: 'game-accounts',
+          }),
+        ),
+      );
+
+      images = [...images, ...uploadedImages.map((item) => item.url)];
+    }
+
     return this.prisma.gameAccount.create({
       data: {
         id: generateId(),
         ...dto,
+        images,
       },
     });
   }

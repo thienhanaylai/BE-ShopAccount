@@ -6,6 +6,7 @@ import {
   IsInt,
   IsOptional,
   IsString,
+  IsUrl,
   Min,
 } from 'class-validator';
 
@@ -45,6 +46,8 @@ export class UpdateGameAccountDto {
   rank?: string;
 
   @IsArray()
+  @IsString({ each: true })
+  @IsUrl({}, { each: true })
   @IsOptional()
   images?: string[];
 

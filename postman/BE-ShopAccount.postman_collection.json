@@ -11,6 +11,8 @@
     { "key": "targetUserId", "value": "" },
     { "key": "gameCategoryId", "value": "" },
     { "key": "gameAccountId", "value": "" },
+    { "key": "mediaPublicId", "value": "" },
+    { "key": "mediaFolder", "value": "shop-account" },
     { "key": "orderId", "value": "" },
     { "key": "transactionId", "value": "" },
     { "key": "sellRequestId", "value": "" },
@@ -115,10 +117,35 @@
           "name": "Create Game Category",
           "request": {
             "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
             "body": {
-              "mode": "raw",
-              "raw": "{\n  \"name\": \"Valorant\",\n  \"slug\": \"valorant\",\n  \"icon\": \"https://cdn.example.com/valorant.png\",\n  \"description\": \"Valorant accounts\",\n  \"isActive\": true\n}"
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "Valorant",
+                  "type": "text"
+                },
+                {
+                  "key": "slug",
+                  "value": "valorant",
+                  "type": "text"
+                },
+                {
+                  "key": "description",
+                  "value": "Valorant accounts",
+                  "type": "text"
+                },
+                {
+                  "key": "isActive",
+                  "value": "true",
+                  "type": "text"
+                },
+                {
+                  "key": "iconFile",
+                  "type": "file",
+                  "src": []
+                }
+              ]
             },
             "url": "{{baseUrl}}/game-categories"
           }
@@ -162,10 +189,60 @@
           "name": "Create Game Account",
           "request": {
             "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
             "body": {
-              "mode": "raw",
-              "raw": "{\n  \"categoryId\": \"{{gameCategoryId}}\",\n  \"username\": \"ga_postman_001\",\n  \"email\": \"ga_postman_001@example.com\",\n  \"password\": \"secret001\",\n  \"price\": 120000,\n  \"status\": \"AVAILABLE\",\n  \"level\": 20,\n  \"rank\": \"Gold\",\n  \"images\": [\"https://cdn.example.com/ga1.png\"],\n  \"description\": \"Postman created account\"\n}"
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "categoryId",
+                  "value": "{{gameCategoryId}}",
+                  "type": "text"
+                },
+                {
+                  "key": "username",
+                  "value": "ga_postman_001",
+                  "type": "text"
+                },
+                {
+                  "key": "email",
+                  "value": "ga_postman_001@example.com",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "secret001",
+                  "type": "text"
+                },
+                {
+                  "key": "price",
+                  "value": "120000",
+                  "type": "text"
+                },
+                {
+                  "key": "status",
+                  "value": "AVAILABLE",
+                  "type": "text"
+                },
+                {
+                  "key": "level",
+                  "value": "20",
+                  "type": "text"
+                },
+                {
+                  "key": "rank",
+                  "value": "Gold",
+                  "type": "text"
+                },
+                {
+                  "key": "description",
+                  "value": "Postman created account",
+                  "type": "text"
+                },
+                {
+                  "key": "imageFiles",
+                  "type": "file",
+                  "src": []
+                }
+              ]
             },
             "url": "{{baseUrl}}/game-accounts"
           }
@@ -198,6 +275,47 @@
           "request": {
             "method": "DELETE",
             "url": "{{baseUrl}}/game-accounts/{{gameAccountId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Media",
+      "item": [
+        {
+          "name": "Upload Image",
+          "request": {
+            "method": "POST",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": []
+                },
+                {
+                  "key": "folder",
+                  "value": "{{mediaFolder}}",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": "{{baseUrl}}/media/upload"
+          }
+        },
+        {
+          "name": "Get Image Details",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/media/details?publicId={{mediaPublicId}}"
+          }
+        },
+        {
+          "name": "Get Image URL",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/media/url?publicId={{mediaPublicId}}"
           }
         }
       ]

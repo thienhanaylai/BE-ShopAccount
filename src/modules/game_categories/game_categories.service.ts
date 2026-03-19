@@ -1,19 +1,44 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { GameCategory } from '@prisma/client';
 import { PrismaService } from '../../prisma/prisma.service';
 import { generateId } from '../../common/utils/nanoid.util';
+import { MediaService } from '../media/media.service';
 import { CreateGameCategoryDto } from './dto/create-game-category.dto';
 import { UpdateGameCategoryDto } from './dto/update-game-category.dto';
 
 @Injectable()
 export class GameCategoriesService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly mediaService: MediaService,
+  ) {}
 
-  async create(dto: CreateGameCategoryDto): Promise<GameCategory> {
+  async create(
+    dto: CreateGameCategoryDto,
+    iconFile?: Express.Multer.File,
+  ): Promise<GameCategory> {
+    let iconUrl = dto.icon?.trim();
+
+    if (iconFile) {
+      const uploaded = await this.mediaService.uploadImage(iconFile, {
+        folder: 'game-categories',
+      });
+      iconUrl = uploaded.url;
+    }
+
+    if (!iconUrl) {
+      throw new BadRequestException('icon or iconFile is required');
+    }
+
     return this.prisma.gameCategory.create({
       data: {
         id: generateId(),
         ...dto,
+        icon: iconUrl,
       },
     });
   }

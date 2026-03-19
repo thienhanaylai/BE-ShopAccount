@@ -8,12 +8,15 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { SupportTicketsService } from './support_tickets.service';
 import { CreateSupportTicketDto } from './dto/create-support-ticket.dto';
 import { UpdateSupportTicketDto } from './dto/update-support-ticket.dto';
+import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
 
 @Controller('support-tickets')
+@UseGuards(JwtAuthGuard)
 export class SupportTicketsController {
   constructor(private readonly service: SupportTicketsService) {}
 

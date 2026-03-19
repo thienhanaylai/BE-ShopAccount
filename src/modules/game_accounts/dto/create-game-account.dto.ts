@@ -7,8 +7,15 @@ import {
   IsNotEmpty,
   IsOptional,
   IsString,
+  IsUrl,
   Min,
 } from 'class-validator';
+import { Transform } from 'class-transformer';
+
+const toInt = (value: unknown): number => {
+  if (typeof value === 'number') return value;
+  return Number.parseInt(String(value), 10);
+};
 
 export class CreateGameAccountDto {
   @IsString()
@@ -26,6 +33,7 @@ export class CreateGameAccountDto {
   @IsNotEmpty()
   password: string;
 
+  @Transform(({ value }) => toInt(value))
   @IsInt()
   @Min(0)
   price: number;
@@ -34,6 +42,7 @@ export class CreateGameAccountDto {
   @IsOptional()
   status?: GameAccountStatus;
 
+  @Transform(({ value }) => toInt(value))
   @IsInt()
   @Min(0)
   @IsOptional()
@@ -44,6 +53,8 @@ export class CreateGameAccountDto {
   rank?: string;
 
   @IsArray()
+  @IsString({ each: true })
+  @IsUrl({}, { each: true })
   @IsOptional()
   images?: string[];
 

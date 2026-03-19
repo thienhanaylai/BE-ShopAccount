@@ -1,5 +1,5 @@
 import { IsBoolean, IsOptional, IsString } from 'class-validator';
-
+import { Transform } from 'class-transformer';
 export class UpdateGameCategoryDto {
   @IsString()
   @IsOptional()
@@ -17,6 +17,10 @@ export class UpdateGameCategoryDto {
   @IsOptional()
   description?: string;
 
+  @Transform(({ value }) => {
+    if (value === 'true') return true;
+    if (value === 'false') return false;
+  })
   @IsBoolean()
   @IsOptional()
   isActive?: boolean;

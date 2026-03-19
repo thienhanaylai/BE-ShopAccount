@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -8,7 +9,12 @@ import {
   Param,
   Patch,
   Post,
+  UploadedFile,
+  UseInterceptors,
+  ValidationPipe,
 } from '@nestjs/common';
+
+import { FileInterceptor } from '@nestjs/platform-express';
 import { GameCategoriesService } from './game_categories.service';
 import { CreateGameCategoryDto } from './dto/create-game-category.dto';
 import { UpdateGameCategoryDto } from './dto/update-game-category.dto';
@@ -19,8 +25,36 @@ export class GameCategoriesController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  create(@Body() dto: CreateGameCategoryDto) {
-    return this.service.create(dto);
+  @UseInterceptors(
+    FileInterceptor('iconFile', {
+      limits: {
+        fileSize: 10 * 1024 * 1024,
+      },
+      fileFilter: (_req, file, callback) => {
+        if (!file.mimetype.startsWith('image/')) {
+          callback(
+            new BadRequestException('Only image files are allowed'),
+            false,
+          );
+          return;
+        }
+
+        callback(null, true);
+      },
+    }),
+  )
+  create(
+    @Body(
+      new ValidationPipe({
+        whitelist: true,
+        transform: true,
+        transformOptions: { enableImplicitConversion: true },
+      }),
+    )
+    dto: CreateGameCategoryDto,
+    @UploadedFile() iconFile?: Express.Multer.File,
+  ) {
+    return this.service.create(dto, iconFile);
   }
 
   @Get()
