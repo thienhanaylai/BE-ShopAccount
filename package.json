@@ -10,6 +10,7 @@
   },
   "scripts": {
     "build": "nest build",
+    "postinstall": "prisma generate",
     "heroku-postbuild": "npm run build",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",

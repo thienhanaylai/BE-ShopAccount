@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma, User, UserRole } from '@prisma/client';
 import { hash } from 'bcrypt';
+import { AdminUpdateUserDto } from './dto/admin-update-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { QueryUsersDto } from './dto/query-users.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -102,6 +103,22 @@ export class UsersService {
     }
 
     return user;
+  }
+
+  async updateByAdmin(id: string, dto: AdminUpdateUserDto): Promise<User> {
+    const found = await this.prisma.user.findUnique({ where: { id } });
+    if (!found) {
+      throw new NotFoundException(`User #${id} not found`);
+    }
+
+    return this.prisma.user.update({
+      where: { id },
+      data: {
+        phone: dto.phone,
+        role: dto.role,
+        status: dto.status,
+      },
+    });
   }
 
   async remove(id: string): Promise<void> {

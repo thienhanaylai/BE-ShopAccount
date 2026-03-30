@@ -216,6 +216,50 @@ Response 200:
 
 Response 204: khong co body
 
+### 3.6 PATCH /users/:id/admin-update (ADMIN only)
+
+Chi cho phep cap nhat: `phone`, `role`, `status`.
+
+Khong cho phep cap nhat qua endpoint nay: `username`, `email`, `password`, `balance`, `balanceUpdatedAt`.
+
+Request body:
+
+```json
+{
+  "phone": "0911222333",
+  "role": "CUSTOMER",
+  "status": "ACTIVE"
+}
+```
+
+Response 200:
+
+```json
+{
+  "id": "usr_001",
+  "username": "user_postman",
+  "email": "user_postman@example.com",
+  "passwordHash": "$2b$10$...",
+  "role": "CUSTOMER",
+  "status": "ACTIVE",
+  "phone": "0911222333",
+  "balance": 0,
+  "balanceUpdatedAt": null,
+  "createdAt": "2026-03-19T08:00:00.000Z",
+  "updatedAt": "2026-03-19T08:15:00.000Z"
+}
+```
+
+Response loi 403:
+
+```json
+{
+  "statusCode": 403,
+  "message": "Admin role required",
+  "error": "Forbidden"
+}
+```
+
 ## 4. Game Categories
 
 ### 4.1 POST /game-categories

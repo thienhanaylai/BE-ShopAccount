@@ -193,6 +193,29 @@ Body (tat ca optional):
 }
 ```
 
+### PATCH /users/:id/admin-update (admin only)
+
+Route update rieng cho admin. Endpoint nay cho phep admin cap nhat thong tin user NHUNG khong duoc sua:
+
+- `username`
+- `email`
+- `password`
+- wallet (`balance`, `balanceUpdatedAt`)
+
+Body (tat ca optional):
+
+```json
+{
+  "phone": "string",
+  "role": "CUSTOMER|ADMIN",
+  "status": "ACTIVE|BLOCKED"
+}
+```
+
+Loi thuong gap:
+
+- `403` Admin role required
+
 ### DELETE /users/:id
 
 Xoa user.
