@@ -70,7 +70,17 @@ export class GameCategoriesController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() dto: UpdateGameCategoryDto) {
+  update(
+    @Param('id') id: string,
+    @Body(
+      new ValidationPipe({
+        whitelist: true,
+        transform: true,
+        transformOptions: { enableImplicitConversion: true },
+      }),
+    )
+    dto: UpdateGameCategoryDto,
+  ) {
     return this.service.update(id, dto);
   }
 
