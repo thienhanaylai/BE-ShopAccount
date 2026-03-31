@@ -53,6 +53,22 @@ export class SupportTicketsController {
     return this.service.findAll(requesterId, requesterRole, query);
   }
 
+  @Get('me')
+  findMyTickets(
+    @CurrentUser('sub') requesterId: string,
+    @Query() query: QuerySupportTicketsDto,
+  ): Promise<{
+    data: SupportTicketDetail[];
+    pagination: {
+      page: number;
+      limit: number;
+      total: number;
+      totalPages: number;
+    };
+  }> {
+    return this.service.findMyTickets(requesterId, query);
+  }
+
   @Get(':id')
   findOne(
     @CurrentUser('sub') requesterId: string,

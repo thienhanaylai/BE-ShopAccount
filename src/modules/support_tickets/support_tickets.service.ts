@@ -140,6 +140,24 @@ export class SupportTicketsService {
     };
   }
 
+  async findMyTickets(
+    requesterId: string,
+    query: QuerySupportTicketsDto,
+  ): Promise<{
+    data: SupportTicketDetail[];
+    pagination: {
+      page: number;
+      limit: number;
+      total: number;
+      totalPages: number;
+    };
+  }> {
+    return this.findAll(requesterId, UserRole.CUSTOMER, {
+      ...query,
+      userId: requesterId,
+    });
+  }
+
   async findOne(
     id: string,
     requesterId: string,
