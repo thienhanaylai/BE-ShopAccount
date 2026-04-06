@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL1")
+  url      = env("DATABASE_URL")
 }
 
 enum UserRole {
@@ -45,12 +45,6 @@ enum TransactionMethod {
   PAYMENT
 }
 
-enum SellRequestStatus {
-  PENDING
-  APPROVED
-  REJECTED
-}
-
 enum SupportTicketStatus {
   PENDING
   IN_PROGRESS
@@ -73,45 +67,13 @@ model User {
   orders           Order[]
   transactions     Transaction[]
   receivedTransactions Transaction[] @relation("TransactionRecipient")
-  sellRequests     SellRequest[]
   supportTickets   SupportTicket[]
   handledSupportTickets SupportTicket[] @relation("SupportTicketHandledBy")
   supportTicketReplies SupportTicketReply[]
-  updatedWebsiteSettings WebsiteSetting[] @relation("WebsiteSettingUpdatedBy")
 
   @@map("users")
 }
 
-model WebsiteSetting {
-  id                       String   @id
-  siteName                 String   @map("site_name")
-  siteDescription          String   @map("site_description")
-  contactEmail             String   @map("contact_email")
-  contactPhone             String   @map("contact_phone")
-  commissionRate           Int      @default(5) @map("commission_rate")
-  minWithdraw              Int      @default(100000) @map("min_withdraw")
-  withdrawFee              Int      @default(5000) @map("withdraw_fee")
-  viettelDiscount          Int      @default(20) @map("viettel_discount")
-  vinaphoneDiscount        Int      @default(20) @map("vinaphone_discount")
-  mobifoneDiscount         Int      @default(20) @map("mobifone_discount")
-  vietnamobileDiscount     Int      @default(25) @map("vietnamobile_discount")
-  emailNotifications       Boolean  @default(true) @map("email_notifications")
-  smsNotifications         Boolean  @default(false) @map("sms_notifications")
-  orderNotifications       Boolean  @default(true) @map("order_notifications")
-  depositNotifications     Boolean  @default(true) @map("deposit_notifications")
-  requireEmailVerification Boolean  @default(true) @map("require_email_verification")
-  requirePhoneVerification Boolean  @default(false) @map("require_phone_verification")
-  twoFactorAuth            Boolean  @default(false) @map("two_factor_auth")
-  maintenanceMode          Boolean  @default(false) @map("maintenance_mode")
-  maintenanceMessage       String   @default("He thong dang bao tri, vui long quay lai sau") @map("maintenance_message")
-  updatedBy                String?  @map("updated_by")
-  createdAt                DateTime @default(now()) @map("created_at")
-  updatedAt                DateTime @updatedAt @map("updated_at")
-  updatedByUser            User?    @relation("WebsiteSettingUpdatedBy", fields: [updatedBy], references: [id], onDelete: SetNull)
-
-  @@index([updatedBy])
-  @@map("website_settings")
-}
 
 model GameCategory {
   id          String        @id @default(cuid())
@@ -182,23 +144,6 @@ model Transaction {
   @@index([orderId])
   @@index([recipientUserId])
   @@map("transactions")
-}
-
-model SellRequest {
-  id              String            @id @default(cuid())
-  userId          String            @map("user_id")
-  price           Int
-  status          SellRequestStatus @default(PENDING)
-  description     String?
-  rejectReason    String?           @map("reject_reason")
-  accountUsername String            @map("account_username")
-  accountPassword String            @map("account_password")
-  createdAt       DateTime          @default(now()) @map("created_at")
-  updatedAt       DateTime          @updatedAt @map("updated_at")
-  user            User              @relation(fields: [userId], references: [id], onDelete: Restrict)
-
-  @@index([userId])
-  @@map("sell_requests")
 }
 
 model SupportTicket {

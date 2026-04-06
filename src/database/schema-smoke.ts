@@ -58,16 +58,6 @@ async function run(): Promise<void> {
       },
     });
 
-    await prisma.sellRequest.create({
-      data: {
-        id: generateId(),
-        userId: user.id,
-        price: 50000,
-        accountUsername: `sell_acc_${suffix}`,
-        accountPassword: 'secret',
-      },
-    });
-
     await prisma.supportTicket.create({
       data: {
         id: generateId(),
@@ -83,7 +73,6 @@ async function run(): Promise<void> {
       include: {
         orders: true,
         transactions: true,
-        sellRequests: true,
         supportTickets: true,
       },
     });
@@ -100,10 +89,6 @@ async function run(): Promise<void> {
       throw new Error('Smoke test failed: transaction relation mismatch');
     }
 
-    if (check.sellRequests.length !== 1) {
-      throw new Error('Smoke test failed: sell request relation mismatch');
-    }
-
     if (check.supportTickets.length !== 1) {
       throw new Error('Smoke test failed: support ticket relation mismatch');
     }
@@ -111,9 +96,6 @@ async function run(): Promise<void> {
     console.log('Schema smoke test passed');
   } finally {
     await prisma.supportTicket.deleteMany({ where: { title: 'Smoke ticket' } });
-    await prisma.sellRequest.deleteMany({
-      where: { accountUsername: { startsWith: 'sell_acc_' } },
-    });
     await prisma.transaction.deleteMany({ where: { price: 100000 } });
     await prisma.order.deleteMany({ where: { price: 100000 } });
     await prisma.gameAccount.deleteMany({

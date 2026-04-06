@@ -7,7 +7,6 @@ import {
   GameAccountStatus,
   OrderStatus,
   Prisma,
-  SellRequestStatus,
   TransactionMethod,
   TransactionStatus,
   UserStatus,
@@ -228,37 +227,6 @@ export class AccountTradesService {
           status: GameAccountStatus.SOLD,
         },
       };
-    });
-  }
-
-  async updateSellRequestStatus(
-    id: string,
-    status: SellRequestStatus,
-    rejectReason?: string,
-  ) {
-    const request = await this.prisma.sellRequest.findUnique({
-      where: { id },
-    });
-
-    if (!request) {
-      throw new NotFoundException(`SellRequest #${id} not found`);
-    }
-
-    if (request.status !== SellRequestStatus.PENDING) {
-      throw new BadRequestException('Only pending requests can be processed');
-    }
-
-    if (status === SellRequestStatus.REJECTED && !rejectReason?.trim()) {
-      throw new BadRequestException('reject reason is required');
-    }
-
-    return this.prisma.sellRequest.update({
-      where: { id },
-      data: {
-        status,
-        rejectReason:
-          status === SellRequestStatus.REJECTED ? rejectReason?.trim() : null,
-      },
     });
   }
 

@@ -7,14 +7,12 @@ import { AuthModule } from './modules/auth/auth.module';
 import { GameAccountsModule } from './modules/game_accounts/game_accounts.module';
 import { GameCategoriesModule } from './modules/game_categories/game_categories.module';
 import { OrdersModule } from './modules/orders/orders.module';
-import { SellRequestsModule } from './modules/sell_requests/sell_requests.module';
 import { SupportTicketsModule } from './modules/support_tickets/support_tickets.module';
 import { TransactionsModule } from './modules/transactions/transactions.module';
 import { UsersModule } from './modules/users/users.module';
 import { WalletsModule } from './modules/wallets/wallets.module';
 import { MediaModule } from 'src/modules/media/media.module';
 import { AccountTradesModule } from './modules/account_trades/account_trades.module';
-import { WebsiteSettingsModule } from './modules/website_settings/website_settings.module';
 import { PrismaModule } from './prisma/prisma.module';
 
 @Module({
@@ -31,8 +29,6 @@ import { PrismaModule } from './prisma/prisma.module';
     TransactionsModule,
     WalletsModule,
     AccountTradesModule,
-    WebsiteSettingsModule,
-    SellRequestsModule,
     SupportTicketsModule,
   ],
   controllers: [AppController],

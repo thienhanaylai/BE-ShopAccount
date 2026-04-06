@@ -74,12 +74,6 @@ Neu co 2 header nay, client nen cap nhat token moi.
 - `TRANSFER`
 - `PAYMENT`
 
-### SellRequestStatus
-
-- `PENDING`
-- `APPROVED`
-- `REJECTED`
-
 ### SupportTicketStatus
 
 - `PENDING`
@@ -512,41 +506,6 @@ Lay URL anh:
 { "url": "https://..." }
 ```
 
-## 12) Sell Requests (can JWT)
-
-### POST /sell-requests
-
-Body:
-
-```json
-{
-  "userId": "string (required)",
-  "price": "int >= 0 (required)",
-  "accountUsername": "string (required)",
-  "accountPassword": "string (required)",
-  "status": "PENDING|APPROVED|REJECTED (optional)",
-  "description": "string (optional)",
-  "rejectReason": "string (optional)"
-}
-```
-
-### GET /sell-requests
-
-Lay danh sach.
-
-### GET /sell-requests/:id
-
-Lay chi tiet.
-
-### PATCH /sell-requests/:id
-
-Cap nhat.
-
-### DELETE /sell-requests/:id
-
-Xoa.
-Response: `204`
-
 ## 13) Support Tickets (can JWT)
 
 ### POST /support-tickets
@@ -660,7 +619,6 @@ curl -X POST http://localhost:3000/media/upload \
 Module moi de dong bo luong mua ban account:
 
 - Mua account: tru so du vi + tao order + tao transaction PAYMENT + doi trang thai account -> SOLD trong cung 1 transaction DB.
-- Duyet/Tu choi yeu cau ban: endpoint cho admin xu ly sell request PENDING.
 
 ### GET /account-trades/me/purchases?page=1&limit=20
 
@@ -782,26 +740,6 @@ Loi thuong gap:
 - `400` Price has changed, refresh and retry
 - `404` GameAccount not found
 
-### POST /account-trades/sell-requests/:id/approve
-
-Admin only. Chi xu ly duoc request dang `PENDING`.
-
-Response 200: tra ve sell request da doi status -> `APPROVED`.
-
-### POST /account-trades/sell-requests/:id/reject
-
-Admin only.
-
-Body:
-
-```json
-{
-  "reason": "Thong tin account khong hop le"
-}
-```
-
-Response 200: tra ve sell request da doi status -> `REJECTED` va gan `rejectReason`.
-
 ## 18) Bo loc da bo sung cho cac endpoint danh sach
 
 Tat ca endpoint list da ho tro pagination:
@@ -816,7 +754,6 @@ Chi tiet tung module:
 - `GET /game-accounts`: `search`, `categoryId`, `status`, `minPrice`, `maxPrice`
 - `GET /orders`: `userId`, `gameAccountId`, `status`, `fromDate`, `toDate`
 - `GET /transactions`: `userId`, `orderId`, `recipientUserId`, `method`, `status`, `fromDate`, `toDate`
-- `GET /sell-requests`: `userId`, `status`, `minPrice`, `maxPrice`, `fromDate`, `toDate`
 - `GET /support-tickets`: `userId`, `category`, `status`, `search`, `fromDate`, `toDate`
 - `GET /account-trades/me/purchases`: `page`, `limit`
 

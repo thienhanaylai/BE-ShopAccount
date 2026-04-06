@@ -1,7 +1,6 @@
 import {
   Body,
   Controller,
-  ForbiddenException,
   Get,
   HttpCode,
   HttpStatus,
@@ -10,16 +9,13 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { SellRequestStatus, UserRole } from '@prisma/client';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
-import type { JwtUserPayload } from '../../common/decorators/current-user.decorator';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import {
   AccountTradesService,
   type PurchaseHistoryResult,
 } from './account_trades.service';
 import { BuyAccountDto } from './dto/buy-account.dto';
-import { RejectSellRequestDto } from './dto/reject-sell-request.dto';
 
 @Controller('account-trades')
 @UseGuards(JwtAuthGuard)
@@ -47,36 +43,5 @@ export class AccountTradesController {
       gameAccountId,
       expectedPrice: dto.expectedPrice,
     });
-  }
-
-  @Post('sell-requests/:id/approve')
-  @HttpCode(HttpStatus.OK)
-  approveSellRequest(
-    @CurrentUser() user: JwtUserPayload,
-    @Param('id') id: string,
-  ) {
-    this.ensureAdminRole(user);
-    return this.service.updateSellRequestStatus(id, SellRequestStatus.APPROVED);
-  }
-
-  @Post('sell-requests/:id/reject')
-  @HttpCode(HttpStatus.OK)
-  rejectSellRequest(
-    @CurrentUser() user: JwtUserPayload,
-    @Param('id') id: string,
-    @Body() dto: RejectSellRequestDto,
-  ) {
-    this.ensureAdminRole(user);
-    return this.service.updateSellRequestStatus(
-      id,
-      SellRequestStatus.REJECTED,
-      dto.reason,
-    );
-  }
-
-  private ensureAdminRole(user: JwtUserPayload): void {
-    if (user.role !== UserRole.ADMIN) {
-      throw new ForbiddenException('Admin role required');
-    }
   }
 }

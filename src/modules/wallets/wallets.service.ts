@@ -249,7 +249,7 @@ export class WalletsService {
     } = { userId };
 
     if (query.type) where.method = query.type;
-    if (query.status) where.status = query.status as TransactionStatus;
+    if (query.status) where.status = query.status;
 
     if (query.fromDate || query.toDate) {
       where.createdAt = {};

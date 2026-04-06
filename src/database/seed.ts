@@ -6,7 +6,6 @@ import {
   OrderStatus,
   TransactionMethod,
   TransactionStatus,
-  SellRequestStatus,
   SupportTicketStatus,
   GameAccountStatus,
 } from '@prisma/client';
@@ -56,7 +55,6 @@ async function seed() {
 
     // Clear old data in FK-safe order.
     await prisma.supportTicket.deleteMany({});
-    await prisma.sellRequest.deleteMany({});
     await prisma.transaction.deleteMany({});
     await prisma.order.deleteMany({});
     await prisma.gameAccount.deleteMany({});
@@ -175,29 +173,6 @@ async function seed() {
       ],
     });
 
-    await prisma.sellRequest.createMany({
-      data: [
-        {
-          id: generateId(),
-          userId: customer02.id,
-          price: 300000,
-          status: SellRequestStatus.PENDING,
-          description: 'Ban acc Lien Quan rank Chien Tuong',
-          accountUsername: 'sell_lq_003',
-          accountPassword: 'sell_secret_003',
-        },
-        {
-          id: generateId(),
-          userId: customer01.id,
-          price: 220000,
-          status: SellRequestStatus.REJECTED,
-          rejectReason: 'Thong tin acc khong hop le',
-          accountUsername: 'sell_ff_004',
-          accountPassword: 'sell_secret_004',
-        },
-      ],
-    });
-
     await prisma.supportTicket.createMany({
       data: [
         {
@@ -222,7 +197,7 @@ async function seed() {
     console.log(`Inserted ${insertedUsers.count} users`);
     console.log(`Inserted ${insertedCategories.count} categories`);
     console.log(
-      'Inserted sample game accounts, orders, transactions, sell requests and support tickets',
+      'Inserted sample game accounts, orders, transactions and support tickets',
     );
     console.log(`Seed done by admin user: ${admin.username}`);
   } catch (err) {

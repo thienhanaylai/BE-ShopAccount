@@ -15,7 +15,6 @@
     { "key": "mediaFolder", "value": "shop-account" },
     { "key": "orderId", "value": "" },
     { "key": "transactionId", "value": "" },
-    { "key": "sellRequestId", "value": "" },
     { "key": "supportTicketId", "value": "" }
   ],
   "item": [
@@ -536,56 +535,6 @@
       ]
     },
     {
-      "name": "Sell Requests",
-      "item": [
-        {
-          "name": "Create Sell Request",
-          "request": {
-            "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"userId\": \"{{userId}}\",\n  \"price\": 250000,\n  \"accountUsername\": \"sell_acc_001\",\n  \"accountPassword\": \"sell_secret_001\",\n  \"status\": \"PENDING\",\n  \"description\": \"Need to sell account quickly\"\n}"
-            },
-            "url": "{{baseUrl}}/sell-requests"
-          }
-        },
-        {
-          "name": "Get Sell Requests",
-          "request": {
-            "method": "GET",
-            "url": "{{baseUrl}}/sell-requests?page=1&limit=20&status=PENDING"
-          }
-        },
-        {
-          "name": "Get Sell Request By Id",
-          "request": {
-            "method": "GET",
-            "url": "{{baseUrl}}/sell-requests/{{sellRequestId}}"
-          }
-        },
-        {
-          "name": "Update Sell Request",
-          "request": {
-            "method": "PATCH",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"status\": \"APPROVED\"\n}"
-            },
-            "url": "{{baseUrl}}/sell-requests/{{sellRequestId}}"
-          }
-        },
-        {
-          "name": "Delete Sell Request",
-          "request": {
-            "method": "DELETE",
-            "url": "{{baseUrl}}/sell-requests/{{sellRequestId}}"
-          }
-        }
-      ]
-    },
-    {
       "name": "Account Trades",
       "item": [
         {
@@ -611,66 +560,6 @@
               "raw": "{\n  \"expectedPrice\": 130000\n}"
             },
             "url": "{{baseUrl}}/account-trades/buy/{{gameAccountId}}"
-          }
-        },
-        {
-          "name": "Approve Sell Request (Admin)",
-          "request": {
-            "method": "POST",
-            "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "Authorization", "value": "Bearer {{authToken}}" }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{}"
-            },
-            "url": "{{baseUrl}}/account-trades/sell-requests/{{sellRequestId}}/approve"
-          }
-        },
-        {
-          "name": "Reject Sell Request (Admin)",
-          "request": {
-            "method": "POST",
-            "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "Authorization", "value": "Bearer {{authToken}}" }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"reason\": \"Thong tin account khong hop le\"\n}"
-            },
-            "url": "{{baseUrl}}/account-trades/sell-requests/{{sellRequestId}}/reject"
-          }
-        }
-      ]
-    },
-    {
-      "name": "Website Settings",
-      "item": [
-        {
-          "name": "Get Website Settings (Admin)",
-          "request": {
-            "method": "GET",
-            "header": [
-              { "key": "Authorization", "value": "Bearer {{authToken}}" }
-            ],
-            "url": "{{baseUrl}}/website-settings"
-          }
-        },
-        {
-          "name": "Update Website Settings (Admin)",
-          "request": {
-            "method": "PATCH",
-            "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "Authorization", "value": "Bearer {{authToken}}" }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"siteName\": \"ShopAccount Pro\",\n  \"contactEmail\": \"admin@shopaccount.vn\",\n  \"commissionRate\": 7,\n  \"withdrawFee\": 8000,\n  \"maintenanceMode\": true,\n  \"maintenanceMessage\": \"He thong dang bao tri tu 23:00 den 01:00\"\n}"
-            },
-            "url": "{{baseUrl}}/website-settings"
           }
         }
       ]
@@ -701,6 +590,16 @@
               { "key": "Authorization", "value": "Bearer {{authToken}}" }
             ],
             "url": "{{baseUrl}}/support-tickets?page=1&limit=20&status=PENDING&search=login"
+          }
+        },
+        {
+          "name": "Get My Support Tickets",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "url": "{{baseUrl}}/support-tickets/me?page=1&limit=20&status=PENDING"
           }
         },
         {
