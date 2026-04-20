@@ -518,6 +518,16 @@
           }
         },
         {
+          "name": "Get All Top-up History (Admin)",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "url": "{{baseUrl}}/wallets/admin/top-up-history?page=1&limit=20&status=SUCCESS&fromDate=2026-04-01&toDate=2026-04-20"
+          }
+        },
+        {
           "name": "Admin Adjust Balance",
           "request": {
             "method": "POST",

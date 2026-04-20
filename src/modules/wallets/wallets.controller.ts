@@ -18,7 +18,14 @@ import { CreateTopUpDto } from './dto/create-top-up.dto';
 import { CreateTransferDto } from './dto/create-transfer.dto';
 import { CreateWithdrawDto } from './dto/create-withdraw.dto';
 import { WalletHistoryQueryDto } from './dto/wallet-history-query.dto';
+import type { WalletHistoryResponse } from './wallets.service';
 import { WalletsService } from './wallets.service';
+
+type WalletTopUpHistoryReader = {
+  getAllTopUpHistory: (
+    query: WalletHistoryQueryDto,
+  ) => Promise<WalletHistoryResponse>;
+};
 
 @Controller('wallets')
 @UseGuards(JwtAuthGuard)
@@ -56,16 +63,30 @@ export class WalletsController {
     return this.service.getHistory(userId, query);
   }
 
+  @Get('admin/top-up-history')
+  getAllTopUpHistory(
+    @CurrentUser('role') role: UserRole,
+    @Query() query: WalletHistoryQueryDto,
+  ): Promise<WalletHistoryResponse> {
+    this.ensureAdminRole(role);
+    const walletService = this.service as WalletTopUpHistoryReader;
+    return walletService.getAllTopUpHistory(query);
+  }
+
   @Post('admin/adjust')
   @HttpCode(HttpStatus.CREATED)
   adminAdjust(
     @CurrentUser() user: JwtUserPayload,
     @Body() dto: AdminAdjustBalanceDto,
   ) {
-    if (user.role !== UserRole.ADMIN) {
-      throw new ForbiddenException('Admin role required');
-    }
+    this.ensureAdminRole(user.role);
 
     return this.service.adminAdjustBalance(dto);
+  }
+
+  private ensureAdminRole(role: UserRole): void {
+    if (role !== UserRole.ADMIN) {
+      throw new ForbiddenException('Admin role required');
+    }
   }
 }

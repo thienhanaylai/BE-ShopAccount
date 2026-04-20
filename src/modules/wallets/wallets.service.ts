@@ -278,6 +278,48 @@ export class WalletsService {
     };
   }
 
+  async getAllTopUpHistory(
+    query: WalletHistoryQueryDto,
+  ): Promise<WalletHistoryResponse> {
+    const page = query.page ?? 1;
+    const limit = query.limit ?? 20;
+    const skip = (page - 1) * limit;
+
+    const where: {
+      method: TransactionMethod;
+      status?: TransactionStatus;
+      createdAt?: { gte?: Date; lte?: Date };
+    } = { method: TransactionMethod.TOP_UP };
+
+    if (query.status) where.status = query.status;
+
+    if (query.fromDate || query.toDate) {
+      where.createdAt = {};
+      if (query.fromDate) where.createdAt.gte = new Date(query.fromDate);
+      if (query.toDate) where.createdAt.lte = new Date(query.toDate);
+    }
+
+    const [items, total] = await this.prisma.$transaction([
+      this.prisma.transaction.findMany({
+        where,
+        orderBy: { createdAt: 'desc' },
+        skip,
+        take: limit,
+      }),
+      this.prisma.transaction.count({ where }),
+    ]);
+
+    return {
+      data: items,
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
+      },
+    };
+  }
+
   async adminAdjustBalance(dto: AdminAdjustBalanceDto) {
     const user = await this.prisma.user.findUnique({
       where: { id: dto.userId },
@@ -344,3 +386,13 @@ export class WalletsService {
 }
 
 export type WalletHistoryItem = Transaction;
+
+export type WalletHistoryResponse = {
+  data: Transaction[];
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+  };
+};
